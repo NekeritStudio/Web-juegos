@@ -1,0 +1,10 @@
+{
+  "id": "5",
+  "nombre": "Ping pong",
+  "descripcion": "juego de Ping pong",
+  "url": "./juegos/ping-pong/index.html",
+  "categoria": "arcade",
+  "tags": ["Ping Pong", "oneplayer", "old"],
+  "miniatura": "./juegos/ping-pong/logo.png",
+  "autor": ""
+}
