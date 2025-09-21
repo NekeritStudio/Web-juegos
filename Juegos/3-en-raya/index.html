@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="tres-en-raya.png">
+    <title>Juego de 3 en Raya</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1 class="game-title">3 en Raya</h1>
+        
+        <div class="game-info">
+            <div class="turn-indicator">
+                Turno de: <span class="current-player" id="turn">X</span>
+            </div>
+        </div>
+        
+        <div class="game-board" id="board">
+            <div class="cell" id="0" onclick="handleClick(0)"></div>
+            <div class="cell" id="1" onclick="handleClick(1)"></div>
+            <div class="cell" id="2" onclick="handleClick(2)"></div>
+            <div class="cell" id="3" onclick="handleClick(3)"></div>
+            <div class="cell" id="4" onclick="handleClick(4)"></div>
+            <div class="cell" id="5" onclick="handleClick(5)"></div>
+            <div class="cell" id="6" onclick="handleClick(6)"></div>
+            <div class="cell" id="7" onclick="handleClick(7)"></div>
+            <div class="cell" id="8" onclick="handleClick(8)"></div>
+        </div>
+        
+        <div class="message" id="message"></div>
+        <button class="reset-button" onclick="reset()">🎮 Nueva Partida</button>
+    </div>
+    
+
+    <!-- Modal de bienvenida -->
+    <div id="welcomeModal" class="modal">
+        <div class="modal-content">
+            <h2>🎮 ¡Bienvenido al 3 en Raya!</h2>
+            <p><strong>Instrucciones:</strong></p>
+            <p>• Haz clic en cualquier casilla para colocar tu marca</p>
+            <p>• El objetivo es conseguir 3 en línea (horizontal, vertical o diagonal)</p>
+            <p>• Juego para 2 jugadores: X y O se alternan</p>
+            <p>• ¡Puedes reiniciar la partida cuando quieras!</p>
+            <button class="modal-button" onclick="closeModal()">¡Empezar a Jugar!</button>
+        </div>
+    </div>
+
+    <script src="main.js" defer></script>
+</body>
+</html>
