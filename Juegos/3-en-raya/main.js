@@ -1,12 +1,17 @@
+// ===== VARIABLES GLOBALES =====
 let board = ['', '', '', '', '', '', '', '', ''];
-let turn = 'X';
+let currentPlayer = 'X';
 let gameOver = false;
+let gameMode = 'pvp'; // 'pvp' o 'pve'
+let aiDifficulty = 'medium';
+
 const winCombinations = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8], // horizontal
-    [0, 3, 6], [1, 4, 7], [2, 5, 8], // vertical
-    [0, 4, 8], [2, 4, 6] // diagonal
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], // filas
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], // columnas
+    [0, 4, 8], [2, 4, 6] // diagonales
 ];
 
+// ===== FUNCIONES DE INTERFAZ =====
 function showModal() {
     document.getElementById('welcomeModal').style.display = 'block';
 }
@@ -15,114 +20,232 @@ function closeModal() {
     document.getElementById('welcomeModal').style.display = 'none';
 }
 
-function empezar() {
-    showModal();
+function setGameMode(mode) {
+    gameMode = mode;
+
+    // Actualizar botones
+    document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`${mode}-btn`).classList.add('active');
+
+    // Mostrar/ocultar selector de dificultad
+    const difficultySelector = document.getElementById('difficulty-selector');
+    difficultySelector.style.display = mode === 'pve' ? 'block' : 'none';
+
+    resetGame();
 }
 
-function reset() {
+function setDifficulty(difficulty) {
+    aiDifficulty = difficulty;
+}
 
+// ===== LÓGICA DEL JUEGO =====
+function playerMove(position) {
+    // Verificar si el movimiento es válido
+    if (gameOver || board[position] !== '') {
+        return;
+    }
 
+    // En modo IA, solo permitir movimientos cuando es turno del jugador humano
+    if (gameMode === 'pve' && currentPlayer === 'O') {
+        return;
+    }
+
+    // Hacer el movimiento
+    makeMove(position, currentPlayer);
+
+    // Verificar fin del juego
+    if (checkWin()) {
+        endGame(`🎉 ¡${currentPlayer} ha ganado!`);
+        return;
+    }
+
+    if (checkDraw()) {
+        endGame('🤝 ¡Empate!');
+        return;
+    }
+
+    // Cambiar turno
+    switchPlayer();
+
+    // Si es modo IA y ahora toca a la IA
+    if (gameMode === 'pve' && currentPlayer === 'O') {
+        setTimeout(aiMove, 800);
+    }
+}
+
+function makeMove(position, player) {
+    board[position] = player;
+    const cell = document.getElementById(`cell-${position}`);
+    cell.textContent = player;
+    cell.classList.add('occupied', player.toLowerCase());
+}
+
+function switchPlayer() {
+    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    document.getElementById('turn').textContent = currentPlayer;
+}
+
+function checkWin() {
+    return winCombinations.some(combination => {
+        const [a, b, c] = combination;
+        if (board[a] && board[a] === board[b] && board[b] === board[c]) {
+            // Resaltar combinación ganadora
+            [a, b, c].forEach(pos => {
+                const cell = document.getElementById(`cell-${pos}`);
+                cell.style.background = 'linear-gradient(45deg, #4ecdc4, #44a08d)';
+                cell.style.transform = 'scale(1.1)';
+                cell.style.boxShadow = '0 0 20px rgba(78, 205, 196, 0.6)';
+            });
+            return true;
+        }
+        return false;
+    });
+}
+
+function checkDraw() {
+    return board.every(cell => cell !== '');
+}
+
+function endGame(message) {
+    gameOver = true;
+    document.getElementById('message').textContent = message;
+    document.getElementById('message').classList.add(message.includes('ganado') ? 'winner' : 'draw');
+
+    if (message.includes('ganado')) {
+        setTimeout(createConfetti, 200);
+    }
+}
+
+function resetGame() {
     board = ['', '', '', '', '', '', '', '', ''];
-    turn = 'X';
+    currentPlayer = 'X';
     gameOver = false;
 
-    document.querySelectorAll('.cell').forEach(cell => {
-        cell.innerHTML = '';
+    // Limpiar tablero
+    document.querySelectorAll('.cell').forEach((cell, index) => {
+        cell.textContent = '';
         cell.classList.remove('occupied', 'x', 'o');
-            // Resetear estilos de las casillas ganadoras
         cell.style.background = '';
         cell.style.transform = '';
         cell.style.boxShadow = '';
     });
 
-    document.getElementById('message').innerHTML = '';
+    // Limpiar mensaje
+    document.getElementById('message').textContent = '';
     document.getElementById('message').classList.remove('winner', 'draw');
-    document.getElementById('turn').innerHTML = turn;
 
-    // Animación de reset
-    document.querySelectorAll('.cell').forEach((cell, index) => {
-        setTimeout(() => {
-            cell.style.animation = 'placeMarker 0.3s ease-out';
-            setTimeout(() => {
-                cell.style.animation = '';
-            }, 300);
-        }, index * 50);
-    });
+    // Actualizar turno
+    document.getElementById('turn').textContent = currentPlayer;
 }
 
-function handleClick(id) {
-    if (gameOver || board[id] !== '') {
+// ===== LÓGICA DE IA =====
+function aiMove() {
+    if (gameOver || currentPlayer !== 'O') {
         return;
     }
 
-    const cell = document.getElementById(id);
-    cell.innerHTML = turn;
-    cell.classList.add('occupied', turn.toLowerCase());
-    board[id] = turn;
+    let position = -1;
 
-    if (checkWin()) {
-        gameOver = true;
-        const messageEl = document.getElementById('message');
-        messageEl.innerHTML = `🎉 ¡${turn} ha ganado!`;
-        messageEl.classList.add('winner');
-
-        // Efecto de confeti (simulado con partículas)
-        setTimeout(() => {
-            createConfetti();
-        }, 100);
-
-        return;
+    switch (aiDifficulty) {
+        case 'easy':
+            position = getRandomMove();
+            break;
+        case 'medium':
+            position = getMediumMove();
+            break;
+        case 'hard':
+            position = getHardMove();
+            break;
     }
 
-    if (board.every(cell => cell !== '')) {
-        gameOver = true;
-        const messageEl = document.getElementById('message');
-        messageEl.innerHTML = '🤝 ¡Empate!';
-        messageEl.classList.add('draw');
-        return;
+    if (position >= 0 && position < 9 && board[position] === '') {
+        makeMove(position, 'O');
+
+        if (checkWin()) {
+            endGame('🤖 ¡La IA ha ganado!');
+            return;
+        }
+
+        if (checkDraw()) {
+            endGame('🤝 ¡Empate!');
+            return;
+        }
+
+        switchPlayer();
+    }
+}
+
+function getRandomMove() {
+    const availableMoves = board
+        .map((cell, index) => cell === '' ? index : -1)
+        .filter(index => index !== -1);
+
+    if (availableMoves.length === 0) return -1;
+
+    return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+}
+
+function getMediumMove() {
+    // 1. Intentar ganar
+    let move = findWinningMove('O');
+    if (move !== -1) return move;
+
+    // 2. Bloquear al jugador
+    move = findWinningMove('X');
+    if (move !== -1) return move;
+
+    // 3. Centro
+    if (board[4] === '') return 4;
+
+    // 4. Esquinas
+    const corners = [0, 2, 6, 8].filter(i => board[i] === '');
+    if (corners.length > 0) {
+        return corners[Math.floor(Math.random() * corners.length)];
     }
 
-    switchTurn();
+    // 5. Cualquier movimiento
+    return getRandomMove();
 }
 
-function switchTurn() {
-    turn = turn === 'X' ? 'O' : 'X';
-    document.getElementById('turn').innerHTML = turn;
+function getHardMove() {
+    return getMediumMove(); // Por simplicidad, usar la misma lógica
 }
 
-function checkWin() {
-    for (let i = 0; i < winCombinations.length; i++) {
-        const [a, b, c] = winCombinations[i];
-        if (board[a] !== '' && board[a] === board[b] && board[b] === board[c]) {
-            // Resaltar la combinación ganadora
-            setTimeout(() => {
-                [a, b, c].forEach(index => {
-                    document.getElementById(index).style.background =
-                        'linear-gradient(45deg, #4ecdc4, #44a08d)';
-                    document.getElementById(index).style.transform = 'scale(1.1)';
-                    document.getElementById(index).style.boxShadow = '0 0 20px rgba(78, 205, 196, 0.6)';
-                });
-            }, 100);
-            return true;
+function findWinningMove(player) {
+    for (const combination of winCombinations) {
+        const [a, b, c] = combination;
+        const line = [board[a], board[b], board[c]];
+
+        // Si tiene 2 fichas del jugador y 1 vacía
+        const playerCount = line.filter(cell => cell === player).length;
+        const emptyCount = line.filter(cell => cell === '').length;
+
+        if (playerCount === 2 && emptyCount === 1) {
+            if (board[a] === '') return a;
+            if (board[b] === '') return b;
+            if (board[c] === '') return c;
         }
     }
-    return false;
+    return -1;
 }
 
+// ===== EFECTOS VISUALES =====
 function createConfetti() {
     const colors = ['#f093fb', '#f5576c', '#4ecdc4', '#667eea', '#764ba2'];
     for (let i = 0; i < 30; i++) {
         setTimeout(() => {
             const confetti = document.createElement('div');
-            confetti.style.position = 'fixed';
-            confetti.style.width = '10px';
-            confetti.style.height = '10px';
-            confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-            confetti.style.left = Math.random() * window.innerWidth + 'px';
-            confetti.style.top = '-10px';
-            confetti.style.zIndex = '1000';
-            confetti.style.borderRadius = '50%';
-            confetti.style.pointerEvents = 'none';
+            confetti.style.cssText = `
+                        position: fixed;
+                        width: 10px;
+                        height: 10px;
+                        background: ${colors[Math.floor(Math.random() * colors.length)]};
+                        left: ${Math.random() * window.innerWidth}px;
+                        top: -10px;
+                        z-index: 1000;
+                        border-radius: 50%;
+                        pointer-events: none;
+                    `;
 
             document.body.appendChild(confetti);
 
@@ -137,6 +260,9 @@ function createConfetti() {
     }
 }
 
+// ===== INICIALIZACIÓN =====
+window.onload = showModal;
+
 // Cerrar modal al hacer clic fuera
 window.onclick = function (event) {
     const modal = document.getElementById('welcomeModal');
@@ -144,6 +270,3 @@ window.onclick = function (event) {
         closeModal();
     }
 }
-
-// Inicializar el juego
-window.onload = empezar;
