@@ -4,7 +4,7 @@
   "descripcion": "juego del Tetris",
   "url": "./juegos/Tetris/index.html",
   "categoria": "arcade",
-  "tags": ["Tetris", "oneplayer", "old"],
+  "tags": ["Tetris", "oneplayer","En desarrollo", "old"],
   "miniatura": "./juegos/Tetris/logo.png",
   "autor": ""
 }
