@@ -703,29 +703,43 @@ class Game {
         this.turn = turn;
         this.board = new Board(pieces, piecePositions);
     }
+    // The main issues are in the Game.activate() method around lines 580-600
+    // Here's the corrected logic:
+
     activate(location) {
         const tilePiece = this.board.tileFind(location);
+
+        // If clicking on opponent's piece when no piece is selected
         if (tilePiece && !this.active && tilePiece.data.player !== this.turn) {
             this.active = null;
             return { type: "INVALID" };
-            // a piece is active rn
         }
+        // A piece is currently active
         else if (this.active) {
             const activePieceId = this.active.data.id;
             this.active = null;
-            const validatedPosition = this.activePieceOptions.find((option) => option.col === location.col && option.row === location.row);
+
+            // Check if the clicked location is a valid move/capture
+            const validatedPosition = this.activePieceOptions.find((option) =>
+                option.col === location.col && option.row === location.row);
             const positionIsValid = !!validatedPosition;
+
             this.activePieceOptions = [];
-            const capturePiece = (validatedPosition === null || validatedPosition === void 0 ? void 0 : validatedPosition.capture) ? this.board.tileFind(validatedPosition.capture) : tilePiece;
-            // a piece is on the tile
+
+            // Determine what piece would be captured (considering en passant)
+            const capturePiece = validatedPosition?.capture ?
+                this.board.tileFind(validatedPosition.capture) : tilePiece;
+
+            // Handle different scenarios
             if (capturePiece) {
                 const capturedPieceId = capturePiece.data.id;
-                // cancelling the selected piece on invalid location
+
+                // Clicking on the same piece cancels selection
                 if (capturedPieceId === activePieceId) {
                     return { type: "CANCEL" };
                 }
+                // Valid capture move
                 else if (positionIsValid) {
-                    // capturing the selected piece
                     this.capture(activePieceId, capturedPieceId, location);
                     return {
                         type: "CAPTURE",
@@ -733,48 +747,88 @@ class Game {
                         capturedPieceId,
                         captures: [location],
                     };
-                    // cancel
                 }
+                // Clicking on opponent piece when move is invalid
                 else if (capturePiece.data.player !== this.turn) {
                     return { type: "CANCEL" };
                 }
-                else {
-                    // proceed to TOUCH or CANCEL
-                }
+                // Clicking on own piece - this will be handled below to select new piece
             }
+            // Moving to empty square
             else if (positionIsValid) {
-                // moving will return castled if that happens (only two move)
                 const castledId = this.move(activePieceId, location);
                 return { type: "MOVE", activePieceId, moves: [location], castledId };
-                // invalid spot. cancel.
             }
+            // Invalid empty square
             else {
                 return { type: "CANCEL" };
             }
         }
-        // no piece selected or new CANCEL + TOUCH
-        if (tilePiece) {
+
+        // Select a new piece (no piece currently active OR clicked on own piece after invalid move)
+        if (tilePiece && tilePiece.data.player === this.turn) {
             const tilePieceId = tilePiece.data.id;
-            const moves = this.board.piecesTilesMoves[tilePieceId];
-            const captures = this.board.piecesTilesCaptures[tilePieceId];
+            const moves = this.board.piecesTilesMoves[tilePieceId] || [];
+            const captures = this.board.piecesTilesCaptures[tilePieceId] || [];
+
             if (!moves.length && !captures.length) {
                 return { type: "INVALID" };
             }
+
             this.active = tilePiece;
             this.activePieceOptions = moves.concat(captures);
             return { type: "TOUCH", captures, moves, activePieceId: tilePieceId };
-            // cancelling
         }
-        else {
-            this.activePieceOptions = [];
-            return { type: "CANCEL" };
-        }
+
+        // Clicking on empty square with no piece selected
+        this.activePieceOptions = [];
+        return { type: "CANCEL" };
     }
-    capture(capturingPieceId, capturedPieceId, location) {
-        const captured = this.board.pieces[capturedPieceId];
+
+    // Also, there's an issue in the capture method - make sure the location parameter
+    // is used correctly for en passant captures:
+
+    pieceCapture(piece) {
+    const pieceId = piece.data.id;
+    const { col, row } = this.piecePositions[pieceId];
+    
+    // CRÍTICO: Limpiar la casilla ANTES de marcar como inactiva
+    if (row && col) {
+        this.state[row][col] = undefined;
+    }
+    
+    // Marcar la pieza como inactiva y limpiar su posición
+    this.piecePositions[pieceId].active = false;
+    delete this.piecePositions[pieceId].col;
+    delete this.piecePositions[pieceId].row;
+}
+
+// En la clase Game, método capture():
+capture(capturingPieceId, capturedPieceId, location) {
+    const captured = this.board.pieces[capturedPieceId];
+    const capturing = this.board.pieces[capturingPieceId];
+    
+    // Para en passant, necesitamos encontrar la ubicación real de la captura
+    const captureOptions = this.board.piecesTilesCaptures[capturingPieceId] || [];
+    const captureOption = captureOptions.find(option => 
+        option.col === location.col && option.row === location.row);
+    
+    // Si hay una ubicación de captura específica (en passant), úsala
+    if (captureOption && captureOption.capture) {
+        const actualCaptureLocation = captureOption.capture;
+        const actualCapturedId = this.board.state[actualCaptureLocation.row][actualCaptureLocation.col];
+        if (actualCapturedId) {
+            const actualCaptured = this.board.pieces[actualCapturedId];
+            this.board.pieceCapture(actualCaptured);
+        }
+    } else {
+        // Captura normal
         this.board.pieceCapture(captured);
-        this.move(capturingPieceId, location, true);
     }
+    
+    // Mover la pieza que captura
+    this.move(capturingPieceId, location, true);
+}
     handleCastling(piece, location) {
         if (piece.data.type !== "KING" ||
             piece.moves.length ||
@@ -869,59 +923,92 @@ class View {
         this.pieces[activePieceId].classList.add("highlight-active");
     }
     drawCapturedPiece(capturedPieceId) {
-        const piece = this.pieces[capturedPieceId];
+    const piece = this.pieces[capturedPieceId];
+    if (piece) {
+        // Aplicar animación de desaparición
         piece.style.setProperty("--transition-delay", "var(--transition-duration)");
         piece.style.removeProperty("--pos-col");
         piece.style.removeProperty("--pos-row");
         piece.style.setProperty("--scale", "0");
+        
+        // Opcional: ocultar completamente después de la animación
+        setTimeout(() => {
+            piece.style.display = 'none';
+        }, 500); // Ajustar según la duración de tu animación
     }
+}
     drawPiecePositions(moves = [], moveInner = "") {
-        document.body.style.setProperty("--color-background", `var(--color-${this.game.turn.toLowerCase()}`);
-        const other = this.game.turn === "WHITE" ? "turn-black" : "turn-white";
-        const current = this.game.turn === "WHITE" ? "turn-white" : "turn-black";
-        this.element.classList.add(current);
-        this.element.classList.remove(other);
-        if (moves.length) {
-            this.element.classList.add("touching");
-        }
-        else {
-            this.element.classList.remove("touching");
-        }
-        const key = (row, col) => `${row}-${col}`;
-        const moveKeys = moves.map(({ row, col }) => key(row, col));
-        this.game.board.tileEach(({ row, col }, piece, pieceMoves, pieceCaptures) => {
-            const tileElement = this.tiles[row][col];
-            const move = moveKeys.includes(key(row, col)) ? moveInner : "";
-            const format = (id, className) => this.game.board.pieces[id].shape();
-            tileElement.innerHTML = `
-        <div class="move">${move}</div>
-        <div class="moves">
-          ${this.game.board.tilesPiecesBlackMoves[row][col].map((id) => format(id, "black")).join("")}
-          ${this.game.board.tilesPiecesWhiteMoves[row][col].map((id) => format(id, "white")).join("")}
-        </div>
-        <div class="captures">
-          ${this.game.board.tilesPiecesBlackCaptures[row][col].map((id) => format(id, "black")).join("")}
-          ${this.game.board.tilesPiecesWhiteCaptures[row][col].map((id) => format(id, "white")).join("")}
-        </div>
-      `;
-            if (piece) {
-                tileElement.classList.add("occupied");
-                const pieceElement = this.pieces[piece.data.id];
+    document.body.style.setProperty("--color-background", `var(--color-${this.game.turn.toLowerCase()}`);
+    const other = this.game.turn === "WHITE" ? "turn-black" : "turn-white";
+    const current = this.game.turn === "WHITE" ? "turn-white" : "turn-black";
+    this.element.classList.add(current);
+    this.element.classList.remove(other);
+
+    if (moves.length) {
+        this.element.classList.add("touching");
+    } else {
+        this.element.classList.remove("touching");
+    }
+
+    const key = (row, col) => `${row}-${col}`;
+    const moveKeys = moves.map(({ row, col }) => key(row, col));
+
+    this.game.board.tileEach(({ row, col }, piece, pieceMoves, pieceCaptures) => {
+        const tileElement = this.tiles[row][col];
+        const move = moveKeys.includes(key(row, col)) ? moveInner : "";
+        const format = (id, className) => this.game.board.pieces[id].shape();
+        
+        tileElement.innerHTML = `
+            <div class="move">${move}</div>
+            <div class="moves">
+              ${this.game.board.tilesPiecesBlackMoves[row][col].map((id) => format(id, "black")).join("")}
+              ${this.game.board.tilesPiecesWhiteMoves[row][col].map((id) => format(id, "white")).join("")}
+            </div>
+            <div class="captures">
+              ${this.game.board.tilesPiecesBlackCaptures[row][col].map((id) => format(id, "black")).join("")}
+              ${this.game.board.tilesPiecesWhiteCaptures[row][col].map((id) => format(id, "white")).join("")}
+            </div>
+        `;
+
+        if (piece) {
+            // La pieza está activa y en esta casilla
+            tileElement.classList.add("occupied");
+            const pieceElement = this.pieces[piece.data.id];
+            
+            // IMPORTANTE: Solo mostrar piezas activas
+            if (this.game.board.piecePositions[piece.data.id].active) {
+                pieceElement.style.display = 'block';
                 pieceElement.style.setProperty("--pos-col", Utils.colToInt(col).toString());
                 pieceElement.style.setProperty("--pos-row", Utils.rowToInt(row).toString());
                 pieceElement.style.setProperty("--scale", "1");
-                pieceElement.classList[(pieceMoves === null || pieceMoves === void 0 ? void 0 : pieceMoves.length) ? "add" : "remove"]("can-move");
-                pieceElement.classList[(pieceCaptures === null || pieceCaptures === void 0 ? void 0 : pieceCaptures.length) ? "add" : "remove"]("can-capture");
-                if (piece.updateShape) {
-                    piece.updateShape = false;
-                    pieceElement.innerHTML = piece.shape();
-                }
+                pieceElement.style.removeProperty("--transition-delay");
+            } else {
+                // La pieza ha sido capturada, ocultarla
+                pieceElement.style.display = 'none';
             }
-            else {
-                tileElement.classList.remove("occupied");
+            
+            pieceElement.classList[(pieceMoves?.length) ? "add" : "remove"]("can-move");
+            pieceElement.classList[(pieceCaptures?.length) ? "add" : "remove"]("can-capture");
+            
+            if (piece.updateShape) {
+                piece.updateShape = false;
+                pieceElement.innerHTML = piece.shape();
             }
-        });
-    }
+        } else {
+            tileElement.classList.remove("occupied");
+        }
+    });
+
+    // Asegurarse de que las piezas inactivas no se muestren
+    Object.keys(this.game.board.pieces).forEach(pieceId => {
+        if (!this.game.board.piecePositions[pieceId].active) {
+            const pieceElement = this.pieces[pieceId];
+            if (pieceElement) {
+                pieceElement.style.display = 'none';
+            }
+        }
+    });
+}
     drawPositions(moves, captures) {
         moves === null || moves === void 0 ? void 0 : moves.forEach(({ row, col }) => {
             var _a, _b;

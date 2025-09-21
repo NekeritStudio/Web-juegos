@@ -4,10 +4,10 @@
   --diameter-tile: calc(1 / 8 * var(--diameter-board));
   --edge-width: calc((min(100vw, 100vh) - var(--diameter-board)) * 0.3);
 
-  /* Colores clásicos sin textura */
-  --color-board-light: #f0e6d2; /* blanco cálido */
-  --color-board-dark: #8b5e3c;  /* marrón */
-  --color-background: #333;
+  /* Colores clásicos blanco/negro */
+  --color-board-light: #ffffff; /* blanco */
+  --color-board-dark: #000000;  /* negro */
+  --color-background: #f5f5f5;  /* fondo gris claro */
   --color-shadow: rgba(0,0,0,0.3);
   --color-shadow-lighter: rgba(0,0,0,0.15);
   --color-success: #1d83e0;
@@ -19,7 +19,7 @@
   --piece-scale: 0.85;
 }
 
-/* Barra lateral */
+/* Barra superior */
 aside {
   display: flex;
   justify-content: space-between;
@@ -32,7 +32,7 @@ aside {
 }
 aside div {
   align-items: center;
-  color: white;
+  color: black; /* texto negro */
   display: flex;
 }
 aside div > * {
@@ -49,6 +49,7 @@ aside div label {
   line-height: 1;
   margin: 0;
   text-transform: uppercase;
+  color: black; /* letras negras */
 }
 aside div label { cursor: pointer; }
 aside div input {
@@ -60,14 +61,42 @@ aside div input:checked + * { font-weight: bold; opacity: 1; }
 aside div svg {
   height: calc(var(--edge-width) * 0.5);
   width: auto;
+  fill: black; /* iconos negros */
 }
 
 html, body { height: 100%; }
 body {
-  background: var(--color-background);
+  background: var(--color-background);body {
+  background: var(--color-background) !important;
+}
   overflow: hidden;
   transition: background-color 250ms ease-in-out;
 }
+
+/* Toggle más visible */
+aside div input + * {
+  opacity: 0.5;
+  padding: 0.2em 0.5em;
+  border-radius: 4px;
+  transition: all 0.25s ease-in-out;
+}
+aside div input:checked + * {
+  font-weight: bold;
+  opacity: 1;
+  color: white;
+  background: var(--color-success);
+  text-shadow: 0 0 4px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+aside div svg {
+  height: calc(var(--edge-width) * 0.5);
+  width: auto;
+  fill: currentColor;
+}
+
+html, body { height: 100%; }
+body { background: var(--color-background); overflow: hidden; }
 
 /* Tablero */
 #view {
@@ -100,7 +129,7 @@ body {
 .perspective-black .board .row { flex-direction: row-reverse; }
 .perspective-black .board { flex-direction: column; }
 
-/* Casillas sin textura */
+/* Casillas */
 .board .row .tile {
   background: none;
   border-radius: 4px;
@@ -115,13 +144,13 @@ body {
   width: var(--diameter-tile);
 }
 
-/* Hover en casillas */
+/* Hover */
 .board .row .tile:hover {
   transform: translateY(-4px) scale(1.02);
   box-shadow: 0 8px 16px rgba(0,0,0,0.25), inset 0 4px 6px rgba(0,0,0,0.2);
 }
 
-/* Colores de casillas marrón/blanco */
+/* Colores tablero */
 .perspective-black .board .row:nth-child(even) .tile:nth-child(odd),
 .perspective-black .board .row:nth-child(odd) .tile:nth-child(even),
 .perspective-white .board .row:nth-child(even) .tile:nth-child(even),
@@ -151,7 +180,6 @@ body {
   width: var(--diameter-tile);
   z-index: 9;
 }
-
 .board .row .tile .move,
 .board .row .tile .moves { align-items: center; }
 .board .row .tile .captures { align-items: flex-start; justify-content: space-between; }
@@ -192,7 +220,6 @@ button:focus { outline: none; position: relative; z-index: 9; }
   width: var(--diameter-board);
   z-index: 99;
 }
-
 .pieces .piece {
   --pos-col: 3.5;
   --scale: 0;
@@ -209,7 +236,6 @@ button:focus { outline: none; position: relative; z-index: 9; }
   width: var(--diameter-tile);
   transform-style: preserve-3d;
 }
-
 .pieces .piece svg {
   display: block;
   left: 50%;
@@ -225,7 +251,7 @@ button:focus { outline: none; position: relative; z-index: 9; }
   filter: drop-shadow(0 5px 5px rgba(0,0,0,0.4));
 }
 
-/* Colores piezas */
+/* Colores piezas normales */
 svg.white { fill: var(--color-white); stroke: var(--color-black); stroke-width: 2; }
 svg.black { fill: var(--color-black); stroke: var(--color-white); stroke-width: 2; }
 
@@ -234,7 +260,6 @@ svg.black { fill: var(--color-black); stroke: var(--color-white); stroke-width: 
   transform: translate(-50%, -50%) scale(1.05) rotateX(10deg) rotateY(10deg);
   filter: drop-shadow(0 8px 12px rgba(0,0,0,0.5));
 }
-
 .pieces .piece.highlight-capture svg {
   transform: translate(-50%, -50%) scale(1.1) rotateX(15deg);
   stroke: var(--color-danger);

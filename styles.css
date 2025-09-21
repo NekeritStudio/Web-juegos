@@ -1,0 +1,105 @@
+/* ====== ESTILO GENERAL ====== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(135deg, #1e1e2f, #2c2c54);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ====== CABECERA ====== */
+header {
+  background: #ff6600;
+  color: #fff;
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+header h1 {
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+/* ====== GALERÍA DE JUEGOS ====== */
+#juegos-container {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+/* ====== TARJETAS DE JUEGOS ====== */
+.juego-card {
+  background: #333;
+  border-radius: 15px;
+  overflow: hidden;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.juego-card:hover {
+  transform: translateY(-8px) scale(1.05);
+  background: #444;
+}
+
+/* Imagen del juego */
+.juego-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.juego-card:hover img {
+  transform: scale(1.1);
+}
+
+/* Nombre del juego */
+.juego-card h2 {
+  margin: 0.5rem 0;
+  font-size: 1.4rem;
+  color: #ffcc00;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+/* Descripción */
+.juego-card p {
+  font-size: 0.9rem;
+  margin: 0.3rem 0;
+  color: #ddd;
+}
+
+/* Botón jugar */
+.juego-card button {
+  margin-top: 0.7rem;
+  background: #ff6600;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 25px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.juego-card button:hover {
+  background: #ff8533;
+  transform: scale(1.1);
+}

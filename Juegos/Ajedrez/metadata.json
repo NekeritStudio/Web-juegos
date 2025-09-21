@@ -1,0 +1,10 @@
+{
+  "id": "1",
+  "nombre": "Ajedrez",
+  "descripcion": "juego de Ajedrez",
+  "url": "./juegos/Ajedrez/index.html",
+  "categoria": "arcade",
+  "tags": ["Ajedrez", "oneplayer", "old"],
+  "miniatura": "./juegos/Ajedrez/logo.png",
+  "autor": "Alberto Ortiz"
+}
