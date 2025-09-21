@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +8,28 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/png" href="logo.png">
 </head>
+
 <body>
   <header>
     <h1>🎮 Web Juegos</h1>
+    <div class="filtros-container">
+      <input type="text" id="busqueda" placeholder="Buscar juegos por nombre...">
+      <select id="filtro-autor">
+        <option value="">Filtrar por autor</option>
+      </select>
+      <select id="filtro-tags">
+        <option value="">Filtrar por tag</option>
+      </select>
+    </div>
+
   </header>
 
+
   <main id="juegos-container">
-    <!-- Aquí se cargarán los juegos dinámicamente -->
+    <!-- Juegos cargados dinámicamente -->
   </main>
 
   <script src="main.js"></script>
 </body>
+
 </html>

@@ -4,7 +4,7 @@
   "descripcion": "juego de Ajedrez",
   "url": "./juegos/Ajedrez/index.html",
   "categoria": "arcade",
-  "tags": ["Ajedrez", "oneplayer", "old"],
+  "tags": ["oneplayer", "old"],
   "miniatura": "./juegos/Ajedrez/logo.png",
   "autor": "Alberto Ortiz"
 }

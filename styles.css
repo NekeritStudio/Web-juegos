@@ -28,7 +28,21 @@ header {
 
 header h1 {
   margin: 0;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+header input,
+header select {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 10px;
+  border: none;
+  font-size: 1rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ====== GALERÍA DE JUEGOS ====== */
@@ -36,8 +50,8 @@ header h1 {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  max-width: calc(400px * 4 + 1.5rem * 3); /* 👈 máximo 3 juegos */
-  margin: 0 auto; /* centra el grid */
+  max-width: calc(400px * 4 + 1.5rem * 3);
+  margin: 0 auto;
   gap: 1.5rem;
   padding: 2rem;
 }
@@ -58,7 +72,6 @@ header h1 {
   background: #444;
 }
 
-/* Imagen del juego */
 .juego-card img {
   width: 100%;
   height: 150px;
@@ -72,22 +85,19 @@ header h1 {
   transform: scale(1.1);
 }
 
-/* Nombre del juego */
 .juego-card h2 {
   margin: 0.5rem 0;
   font-size: 1.4rem;
   color: #ffcc00;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-/* Descripción */
 .juego-card p {
   font-size: 0.9rem;
   margin: 0.3rem 0;
   color: #ddd;
 }
 
-/* Botón jugar */
 .juego-card button {
   margin-top: 0.7rem;
   background: #ff6600;
@@ -111,7 +121,7 @@ header h1 {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  justify-content: center; /* 👈 Centra los tags */
+  justify-content: center;
 }
 
 .tag {
@@ -121,10 +131,38 @@ header h1 {
   font-size: 0.75em;
   font-weight: 600;
   text-transform: lowercase;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease;
 }
 
 .tag:hover {
   transform: scale(1.05);
 }
+
+/* ====== filtros ====== */
+.filtros-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem; 
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.filtros-container input {
+  flex: 2 1 700px; /* más ancho */
+  max-width: 700px;
+  padding: 0.8rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 1rem;
+}
+
+.filtros-container select {
+  flex: 1 1 150px; /* más estrecho */
+  max-width: 200px;
+  padding: 0.8rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 1rem;
+}
+
