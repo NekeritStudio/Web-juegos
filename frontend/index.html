@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nekerit Games</title>
+</head>
+
+<body>
+
+    <h1>Nekerit Games</h1>
+    <h2>Endpoints: </h2>
+    <ul>
+        <li><code>GET /api/games</code> - List all games</li>
+        <li><code>GET /api/games/:id</code> - Get a specific game</li>
+        <li><code>GET /api/games/category/:category</code> - Get games by category</li>
+    </ul>
+    <div id="games">
+        <p id="list-games">
+
+        </p>
+    </div>
+
+    <script>
+        const games = fetch('http://localhost:3000/api/games')
+            .then(response => response.json())
+            .then(data => {
+                const listGamesElement = document.getElementById('list-games')
+
+                data.forEach(game => {
+                    const gameElement = document.createElement('div')
+                    gameElement.innerHTML = `
+                    <h2>${game.name}</h2>
+                    <p>${game.description}</p>
+                    <button onclick="playGame('${game.url}')">Jugar</button>
+                    <img src="${game.thumbnail}" alt="${game.name} Thumbnail" width="200">
+                `
+                    listGamesElement.appendChild(gameElement)
+                })
+            })
+            .catch(error => {
+                console.error('Error fetching games:', error)
+            })
+
+        function playGame(url) {
+            const fixedUrl = url.replace('./games/', '../games/')
+            window.location.href = fixedUrl
+        }
+    </script>
+</body>
+
+</html>

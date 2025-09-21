@@ -1,0 +1,17 @@
+{
+    "name": "pingpong",
+    "description": "juego de ping pong",
+    "url": "./games/ping-pong/index.html",
+    "category": "arcade",
+    "tags": [
+        "ping pong",
+        "oneplayer",
+        "old"
+    ],
+    "thumbnail": "./games/ping-pong/assets/pingpong_miniatura.png",
+    "screenshots": [
+        "./games/ping-pong/assets/pingpong_screenshot1.png",
+        "./games/ping-pong/assets/pingpong_screenshot2.png"
+    ],
+    "author": "discord"
+}
