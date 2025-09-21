@@ -3,8 +3,8 @@
   "nombre": "Ajedrez",
   "descripcion": "juego de Ajedrez",
   "url": "./juegos/Ajedrez/index.html",
-  "categoria": "arcade",
-  "tags": ["oneplayer", "old"],
+  "categoria": "Lógica",
+  "tags": ["Oneplayer", "Old", "Two players", "Contra IA"],
   "miniatura": "./juegos/Ajedrez/logo.png",
   "autor": "Alberto Ortiz"
 }

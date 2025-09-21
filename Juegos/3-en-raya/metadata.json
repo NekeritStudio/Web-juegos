@@ -3,8 +3,8 @@
   "nombre": "3 en raya",
   "descripcion": "juego del 3 en raya",
   "url": "./juegos/3-en-raya/index.html",
-  "categoria": "arcade",
-  "tags": ["two players", "old"],
+  "categoria": "Lógica",
+  "tags": ["Two players", "Old"],
   "miniatura": "./juegos/3-en-raya/tres-en-raya.png",
   "autor": "Alberto Ortiz"
 }
