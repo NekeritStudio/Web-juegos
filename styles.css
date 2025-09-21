@@ -35,13 +35,12 @@ header h1 {
 #juegos-container {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  max-width: calc(220px * 4 + 1.5rem * 3); /*  máximo 4 juegos */
-  margin: 0 auto; 
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  max-width: calc(400px * 4 + 1.5rem * 3); /* 👈 máximo 3 juegos */
+  margin: 0 auto; /* centra el grid */
   gap: 1.5rem;
   padding: 2rem;
 }
-
 
 /* ====== TARJETAS DE JUEGOS ====== */
 .juego-card {

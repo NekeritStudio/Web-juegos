@@ -2,7 +2,8 @@
 const rutas = [
   "Juegos/Ajedrez/metadata.json",
   "Juegos/3-en-raya/metadata.json",
-  "Juegos/pac-man/metadata.json"
+  "Juegos/pac-man/metadata.json",
+  "Juegos/Tetris/metadata.json",
   // 👉 Cuando tengas más juegos, añade más rutas aquí
 ];
 

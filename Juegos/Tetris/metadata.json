@@ -1,0 +1,10 @@
+{
+  "id": "4",
+  "nombre": "Tetris",
+  "descripcion": "juego del Tetris",
+  "url": "./juegos/Tetris/index.html",
+  "categoria": "arcade",
+  "tags": ["Tetris", "oneplayer", "old"],
+  "miniatura": "./juegos/Tetris/logo.png",
+  "autor": ""
+}
