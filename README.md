@@ -101,12 +101,6 @@ Los tags de los juegos se colorean automáticamente usando la paleta definida en
 
 ---
 
-## 👾 Autor
-
-Tu nombre o alias
-
----
-
 ## 🖥️ Vista previa
 
 La página carga automáticamente las tarjetas de los juegos con:
