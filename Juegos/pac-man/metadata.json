@@ -1,0 +1,10 @@
+{
+  "id": "3",
+  "nombre": "Pac man",
+  "descripcion": "juego del Pac man",
+  "url": "./juegos/pac-man/index.html",
+  "categoria": "arcade",
+  "tags": ["Pac man", "oneplayer", "old"],
+  "miniatura": "./juegos/pac-man/logo.png",
+  "autor": "Alberto Ortiz"
+}

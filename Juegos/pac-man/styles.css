@@ -1,0 +1,218 @@
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+
+  body {
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Courier New', monospace;
+      color: #fff;
+  }
+
+  .game-info {
+      display: flex;
+      justify-content: space-between;
+      width: 420px;
+      margin-bottom: 10px;
+      font-size: 20px;
+      font-weight: bold;
+  }
+
+  .score {
+      color: #ffff00;
+  }
+
+  .lives {
+      color: #ff6b6b;
+  }
+
+  #gameBoard {
+      display: grid;
+      grid-template-columns: repeat(21, 20px);
+      grid-template-rows: repeat(21, 20px);
+      gap: 0;
+      border: 2px solid #0000ff;
+      background: #000;
+  }
+
+  .cell {
+      width: 20px;
+      height: 20px;
+      position: relative;
+  }
+
+  .wall {
+      background: #0000ff;
+  }
+
+  .dot {
+      background: #000;
+      position: relative;
+  }
+
+  .dot::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 3px;
+      height: 3px;
+      background: #ffff00;
+      border-radius: 50%;
+  }
+
+  .power-pellet {
+      background: #000;
+      position: relative;
+  }
+
+  .power-pellet::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      background: #ffff00;
+      border-radius: 50%;
+      animation: pulse 0.5s infinite alternate;
+  }
+
+  @keyframes pulse {
+      from {
+          opacity: 1;
+      }
+
+      to {
+          opacity: 0.3;
+      }
+  }
+
+  .pacman {
+      background: #ffff00;
+      border-radius: 50%;
+      position: relative;
+      z-index: 10;
+  }
+
+  .pacman::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 0;
+      height: 0;
+      border: 8px solid #000;
+      border-right-color: transparent;
+      border-radius: 0 10px 10px 0;
+  }
+
+  .pacman.right::before {
+      border-left-color: transparent;
+      border-right-color: #000;
+      transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  .pacman.left::before {
+      border-right-color: transparent;
+      border-left-color: #000;
+      transform: translate(-50%, -50%) rotate(180deg);
+  }
+
+  .pacman.up::before {
+      border-bottom-color: transparent;
+      border-top-color: #000;
+      transform: translate(-50%, -50%) rotate(-90deg);
+  }
+
+  .pacman.down::before {
+      border-top-color: transparent;
+      border-bottom-color: #000;
+      transform: translate(-50%, -50%) rotate(90deg);
+  }
+
+  .ghost {
+      border-radius: 50% 50% 0 0;
+      position: relative;
+      z-index: 9;
+  }
+
+  .ghost::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(45deg, transparent 25%, currentColor 25%, currentColor 75%, transparent 75%);
+      background-size: 4px 4px;
+  }
+
+  .ghost.red {
+      background: #ff0000;
+      color: #ff0000;
+  }
+
+  .ghost.pink {
+      background: #ffb8ff;
+      color: #ffb8ff;
+  }
+
+  .ghost.cyan {
+      background: #00ffff;
+      color: #00ffff;
+  }
+
+  .ghost.orange {
+      background: #ffb852;
+      color: #ffb852;
+  }
+
+  .ghost.scared {
+      background: #0000ff !important;
+      color: #0000ff !important;
+  }
+
+  .game-over {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.9);
+      color: #fff;
+      padding: 30px;
+      border: 3px solid #ffff00;
+      text-align: center;
+      font-size: 24px;
+      z-index: 1000;
+  }
+
+  .controls {
+      margin-top: 20px;
+      text-align: center;
+      color: #aaa;
+  }
+
+  button {
+      background: #ffff00;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 10px;
+      border-radius: 5px;
+  }
+
+  button:hover {
+      background: #fff;
+  }
