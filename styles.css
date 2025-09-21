@@ -1,3 +1,36 @@
+/* ====== VARIABLES DE TEMA ACTUALIZADAS ====== */
+:root {
+  /* Tema Oscuro (por defecto) */
+  --bg-gradient: linear-gradient(135deg, #1e1e2f, #2c2c54);
+  --text-color: #fff;
+  --header-bg: #08f524;
+  --card-bg: #333;
+  --card-hover-bg: #444;
+  --card-text: #ddd;
+  --card-title: #ffcc00; /* Amarillo para modo oscuro */
+  --input-bg: #fff;
+  --input-text: #333;
+  --shadow: rgba(0, 0, 0, 0.6);
+  --header-shadow: rgba(0, 0, 0, 0.4);
+  --theme-icon: "🌞";
+}
+
+[data-theme="light"] {
+  /* Tema Claro */
+  --bg-gradient: linear-gradient(135deg, #f0f0f0, #e8e8e8);
+  --text-color: #333;
+  --header-bg: #08f524;
+  --card-bg: #fff;
+  --card-hover-bg: #f8f8f8;
+  --card-text: #555;
+  --card-title: #0066cc; /* Azul oscuro para modo claro */
+  --input-bg: #fff;
+  --input-text: #333;
+  --shadow: rgba(0, 0, 0, 0.2);
+  --header-shadow: rgba(0, 0, 0, 0.2);
+  --theme-icon: "🌙";
+}
+
 /* ====== ESTILO GENERAL ====== */
 * {
   box-sizing: border-box;
@@ -7,23 +40,25 @@
 
 body {
   font-family: "Segoe UI", Arial, sans-serif;
-  background: linear-gradient(135deg, #1e1e2f, #2c2c54);
-  color: #fff;
+  background: var(--bg-gradient);
+  color: var(--text-color);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  transition: all 0.3s ease;
 }
 
 /* ====== CABECERA ====== */
 header {
-  background: #08f524;
+  background: var(--header-bg);
   color: #fff;
   padding: 1.5rem;
   text-align: center;
   font-size: 1.8rem;
   font-weight: bold;
   letter-spacing: 2px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 12px var(--header-shadow);
+  position: relative;
 }
 
 header h1 {
@@ -31,18 +66,72 @@ header h1 {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-header input,
-header select {
-  margin-top: 1rem;
-  padding: 0.8rem;
-  width: 90%;
-  max-width: 400px;
-  border-radius: 10px;
+/* ====== BOTÓN DE TEMA ====== */
+.theme-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.9);
   border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1) rotate(180deg);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.theme-toggle::after {
+  content: var(--theme-icon);
+}
+
+/* ====== FILTROS ====== */
+.filtros-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem; 
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.filtros-container input,
+.filtros-container select {
+  background: var(--input-bg);
+  color: var(--input-text);
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.filtros-container input {
+  flex: 2 1 700px;
+  max-width: 700px;
+  padding: 0.8rem;
+  border-radius: 10px;
   font-size: 1rem;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+}
+
+.filtros-container select {
+  flex: 1 1 150px;
+  max-width: 200px;
+  padding: 0.8rem;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.filtros-container input:focus,
+.filtros-container select:focus {
+  outline: none;
+  border-color: var(--header-bg);
+  box-shadow: 0 0 0 3px rgba(8, 245, 36, 0.2);
 }
 
 /* ====== GALERÍA DE JUEGOS ====== */
@@ -58,18 +147,20 @@ header select {
 
 /* ====== TARJETAS DE JUEGOS ====== */
 .juego-card {
-  background: #333;
+  background: var(--card-bg);
   border-radius: 15px;
   overflow: hidden;
   padding: 1rem;
   text-align: center;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6);
-  transition: transform 0.3s ease, background 0.3s ease;
+  box-shadow: 0 6px 14px var(--shadow);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .juego-card:hover {
   transform: translateY(-8px) scale(1.05);
-  background: #444;
+  background: var(--card-hover-bg);
+  box-shadow: 0 12px 25px var(--shadow);
 }
 
 .juego-card img {
@@ -85,17 +176,19 @@ header select {
   transform: scale(1.1);
 }
 
+/* ====== TÍTULOS CORREGIDOS ====== */
 .juego-card h2 {
   margin: 0.5rem 0;
   font-size: 1.4rem;
-  color: #ffcc00;
+  color: var(--card-title); /* Ahora usa la variable */
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  transition: color 0.3s ease;
 }
 
 .juego-card p {
   font-size: 0.9rem;
   margin: 0.3rem 0;
-  color: #ddd;
+  color: var(--card-text);
 }
 
 .juego-card button {
@@ -108,12 +201,13 @@ header select {
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .juego-card button:hover {
   background: #ff8533;
   transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
 }
 
 .tags-container {
@@ -133,36 +227,38 @@ header select {
   text-transform: lowercase;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease;
+  background: var(--header-bg);
+  color: #fff;
 }
 
 .tag:hover {
   transform: scale(1.05);
 }
 
-/* ====== filtros ====== */
-.filtros-container {
-  display: flex;
-  justify-content: center;
-  gap: 1rem; 
-  margin-top: 1rem;
-  flex-wrap: wrap;
+/* ====== ANIMACIÓN DE TRANSICIÓN ====== */
+.theme-transition {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.filtros-container input {
-  flex: 2 1 700px; /* más ancho */
-  max-width: 700px;
-  padding: 0.8rem;
-  border-radius: 10px;
-  border: none;
-  font-size: 1rem;
+/* ====== INDICADOR DE TEMA ====== */
+.theme-indicator {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--card-bg);
+  color: var(--text-color);
+  padding: 1rem 2rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px var(--shadow);
+  font-weight: bold;
+  font-size: 1.2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
 }
 
-.filtros-container select {
-  flex: 1 1 150px; /* más estrecho */
-  max-width: 200px;
-  padding: 0.8rem;
-  border-radius: 10px;
-  border: none;
-  font-size: 1rem;
+.theme-indicator.show {
+  opacity: 1;
 }
-

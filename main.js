@@ -107,3 +107,84 @@ selectAutor.addEventListener('change', filtrarJuegos);
 
 // Cargar los juegos al inicio
 cargarJuegos();
+// ====== FUNCIONALIDAD DE TEMA ====== 
+    function toggleTheme() {
+      const body = document.body;
+      const indicator = document.getElementById('themeIndicator');
+      const themeText = document.getElementById('themeText');
+      
+      // Añadir clase de transición
+      body.classList.add('theme-transition');
+      
+      if (body.getAttribute('data-theme') === 'light') {
+        body.setAttribute('data-theme', 'dark');
+        themeText.textContent = 'Modo Oscuro';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        body.setAttribute('data-theme', 'light');
+        themeText.textContent = 'Modo Claro';
+        localStorage.setItem('theme', 'light');
+      }
+      
+      // Mostrar indicador
+      indicator.classList.add('show');
+      setTimeout(() => {
+        indicator.classList.remove('show');
+      }, 1000);
+      
+      // Remover clase de transición después de la animación
+      setTimeout(() => {
+        body.classList.remove('theme-transition');
+      }, 500);
+    }
+
+    // Cargar tema guardado
+    function loadTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.body.setAttribute('data-theme', savedTheme);
+      
+      const themeText = document.getElementById('themeText');
+      themeText.textContent = savedTheme === 'dark' ? 'Modo Oscuro' : 'Modo Claro';
+    }
+
+    // Ejecutar al cargar la página
+    document.addEventListener('DOMContentLoaded', loadTheme);
+
+    // ====== FUNCIONALIDAD DE FILTROS (ejemplo básico) ======
+    document.getElementById('busqueda').addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      const cards = document.querySelectorAll('.juego-card');
+      
+      cards.forEach(card => {
+        const title = card.querySelector('h2').textContent.toLowerCase();
+        card.style.display = title.includes(searchTerm) ? 'block' : 'none';
+      });
+    });
+
+    document.getElementById('filtro-autor').addEventListener('change', function() {
+      const selectedAuthor = this.value;
+      const cards = document.querySelectorAll('.juego-card');
+      
+      cards.forEach(card => {
+        const author = card.querySelector('p:nth-child(4)').textContent;
+        card.style.display = selectedAuthor === '' || author.includes(selectedAuthor) ? 'block' : 'none';
+      });
+    });
+
+    document.getElementById('filtro-tags').addEventListener('change', function() {
+      const selectedTag = this.value;
+      const cards = document.querySelectorAll('.juego-card');
+      
+      cards.forEach(card => {
+        const tags = card.querySelectorAll('.tag');
+        let hasTag = selectedTag === '';
+        
+        tags.forEach(tag => {
+          if (tag.textContent === selectedTag) hasTag = true;
+        });
+        
+        card.style.display = hasTag ? 'block' : 'none';
+      });
+    });
+
+  
