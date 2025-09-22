@@ -4,7 +4,7 @@
   "descripcion": "juego de Ajedrez",
   "url": "./juegos/ahorcado/index.html",
   "categoria": "Lógica",
-  "tags": ["Oneplayer", "Old"],
+  "tags": ["Oneplayer", "Old", "En desarrollo"],
   "miniatura": "./juegos/ahorcado/logo.png",
   "autor": "Matheow Malpartida"
 }
