@@ -1,0 +1,10 @@
+{
+  "id": "6",
+  "nombre": "Ahorcado",
+  "descripcion": "juego de Ajedrez",
+  "url": "./juegos/ahorcado/index.html",
+  "categoria": "Lógica",
+  "tags": ["Oneplayer", "Old"],
+  "miniatura": "./juegos/ahorcado/logo.png",
+  "autor": "Matheow Malpartida"
+}
