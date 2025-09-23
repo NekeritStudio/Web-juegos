@@ -4,12 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tetris</title>
-        <link rel="icon" type="image/png" href="logo.png">
+    <link rel="icon" type="image/png" href="logo.png">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1> TETRIS</h1>
-    <H2> En desarrollo</H2>
+    <div class="fondo">
+        <div class="areaJuego">
+            <div class="pantallaInicioDerrota" id="pantallaInicio">
+                <h1>Tetris</h1>
+                <button id="botonIniciar">Empezar</button>
+            </div>
+        </div>
+    </div>
+    <template id="juego">
+        
+        <div class="juego" id="juego">
+            <canvas id="tablero"></canvas>
+            <div id="informacion">
+                
+                <div id="siguientePieza">
+                    <h2>Siguiente pieza:</h2>
+                    <canvas></canvas>
+                </div>                    
+                <div id="puntuacion">
+                    <h2>Puntuación: <span id="puntuacion">0</span></h2>
+                </div>
+            
+            </div>
+        </div>
+
+    </template>
+    <template id="pantallaDerrota">
+        
+        <div class="pantallaInicioDerrota" id="pantallaDerrota">
+            <h1>Has perdido</h1>
+            <button id="botonReiniciar">Reiniciar</button>
+        </div>
+        
+    </template>
 
     <script src="script.js"></script>
 </body>
