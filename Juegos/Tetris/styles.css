@@ -1,0 +1,111 @@
+body{
+    margin: auto;
+}
+button{
+    background-color: #5534C0;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: medium;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #5534C0;
+    transition: all 0.3s ease;
+}
+button:hover{
+    background-color: #6740EA;
+    box-shadow: 0 0 10px #6740EA;
+}
+
+.fondo{
+    background-color: black;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+.areaJuego{
+    background-color: #6740EA;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pantallaInicioDerrota{
+    background-color: #EBDA3F;
+    height: 50%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.juego{
+    background-color: #6C59AB;
+    height: calc(100% - 2rem);
+    margin: 1rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: #EBDA3F 5px solid;
+    border-radius: 10px;
+}
+
+#tablero{
+    background-color: #37227C;
+    width: 45%;
+    height: 90%;
+    display: grid;
+    grid-template-rows: repeat(20, 1fr);
+    grid-template-columns: repeat(10, 1fr);
+    border: 2px solid white;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    border-radius: 10px;
+}
+
+#informacion{
+    background-color: #37227C;
+    width: 45%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    color: #EBDA3F;
+    font-family: 'Arial', sans-serif;
+    font-size: small;
+    border: 2px solid #EBDA3F;
+    border-radius: 10px;
+}
+#siguientePieza{
+    background-color: #6C59AB;
+    width: 80%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #EBDA3F;
+    box-shadow: 0 0 10px #EBDA3F;
+    border-radius: 10px;
+    margin-top: 1rem;
+}
+
+#siguientePieza h2{
+    margin: 1rem;
+    padding: 0;
+    font-size: medium;
+}
+
+#siguientePieza canvas{
+    background-color: #37227C;
+    border: 2px solid #EBDA3F;
+    border-radius: 10px;
+    width: 80%;
+    height: 6rem;
+    margin-bottom: 1rem;
+}
