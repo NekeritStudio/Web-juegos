@@ -16,7 +16,6 @@ function verificarProtocolo() {
 
 verificarProtocolo();
 
-
 const contenedor = document.getElementById("juegos-container");
 const inputBusqueda = document.getElementById("busqueda");
 const selectTags = document.getElementById("filtro-tags");
@@ -53,7 +52,6 @@ async function cargarJuegos() {
   todosLosTags.forEach(tag => {
     const option = document.createElement('option');
     option.value = tag;
-    // Mostrar con primera letra mayúscula
     option.textContent = tag.charAt(0).toUpperCase() + tag.slice(1);
     selectTags.appendChild(option);
   });
@@ -88,9 +86,9 @@ function mostrarJuego(juego) {
   card.innerHTML = `
         <img src="${juego.miniatura}" alt="${juego.nombre}">
         <h2>${juego.nombre}</h2>
-        <p>${juego.descripcion}</p>
-        <p><strong>Categoría:</strong> ${juego.categoria}</p>
-        ${juego.autor ? `<p><strong>Autor:</strong> ${juego.autor}</p>` : ''}
+        <p class="descripcion">${juego.descripcion}</p>
+        <p class="categoria"><strong>Categoría:</strong> ${juego.categoria}</p>
+        ${juego.autor ? `<p class="autor"><strong>Autor:</strong> ${juego.autor}</p>` : ''}
         ${tagsHTML ? `<div class="tags-container">${tagsHTML}</div>` : ''}
         <button onclick="location.href='${juego.url}'">Jugar</button>
       `;
@@ -98,23 +96,23 @@ function mostrarJuego(juego) {
   contenedor.appendChild(card);
 }
 
+// Filtro unificado
 function filtrarJuegos() {
   const texto = inputBusqueda.value.toLowerCase();
-  const tagSeleccionado = selectTags.value;
-  const autorSeleccionado = selectAutor.value;
+  const tagSeleccionado = selectTags.value.toLowerCase();
+  const autorSeleccionado = selectAutor.value.toLowerCase();
 
   const filtrados = todosLosJuegos.filter(juego => {
     const nombreCoincide = juego.nombre.toLowerCase().includes(texto);
-    const tagCoincide = !tagSeleccionado || 
-      juego.tags?.some(tag => tag.toLowerCase() === tagSeleccionado.toLowerCase());
-    const autorCoincide = !autorSeleccionado || juego.autor === autorSeleccionado;
+    const tagCoincide = !tagSeleccionado || juego.tags?.some(tag => tag.toLowerCase() === tagSeleccionado);
+    const autorCoincide = !autorSeleccionado || (juego.autor?.toLowerCase() === autorSeleccionado);
     return nombreCoincide && tagCoincide && autorCoincide;
   });
 
   mostrarJuegos(filtrados);
 }
 
-// Eventos de filtrado
+// Eventos de filtrado unificados
 inputBusqueda.addEventListener('input', filtrarJuegos);
 selectTags.addEventListener('change', filtrarJuegos);
 selectAutor.addEventListener('change', filtrarJuegos);
@@ -128,7 +126,6 @@ function toggleTheme() {
   const indicator = document.getElementById('themeIndicator');
   const themeText = document.getElementById('themeText');
   
-  // Añadir clase de transición
   body.classList.add('theme-transition');
   
   if (body.getAttribute('data-theme') === 'light') {
@@ -141,16 +138,9 @@ function toggleTheme() {
     localStorage.setItem('theme', 'light');
   }
   
-  // Mostrar indicador
   indicator.classList.add('show');
-  setTimeout(() => {
-    indicator.classList.remove('show');
-  }, 1000);
-  
-  // Remover clase de transición después de la animación
-  setTimeout(() => {
-    body.classList.remove('theme-transition');
-  }, 500);
+  setTimeout(() => indicator.classList.remove('show'), 1000);
+  setTimeout(() => body.classList.remove('theme-transition'), 500);
 }
 
 // Cargar tema guardado
@@ -162,42 +152,4 @@ function loadTheme() {
   themeText.textContent = savedTheme === 'dark' ? 'Modo Oscuro' : 'Modo Claro';
 }
 
-// Ejecutar al cargar la página
 document.addEventListener('DOMContentLoaded', loadTheme);
-
-// ====== FUNCIONALIDAD DE FILTROS (ejemplo básico) ======
-document.getElementById('busqueda').addEventListener('input', function() {
-  const searchTerm = this.value.toLowerCase();
-  const cards = document.querySelectorAll('.juego-card');
-  
-  cards.forEach(card => {
-    const title = card.querySelector('h2').textContent.toLowerCase();
-    card.style.display = title.includes(searchTerm) ? 'block' : 'none';
-  });
-});
-
-document.getElementById('filtro-autor').addEventListener('change', function() {
-  const selectedAuthor = this.value;
-  const cards = document.querySelectorAll('.juego-card');
-  
-  cards.forEach(card => {
-    const author = card.querySelector('p:nth-child(4)')?.textContent || '';
-    card.style.display = selectedAuthor === '' || author.includes(selectedAuthor) ? 'block' : 'none';
-  });
-});
-
-document.getElementById('filtro-tags').addEventListener('change', function() {
-  const selectedTag = this.value;
-  const cards = document.querySelectorAll('.juego-card');
-  
-  cards.forEach(card => {
-    const tags = card.querySelectorAll('.tag');
-    let hasTag = selectedTag === '';
-    
-    tags.forEach(tag => {
-      if (tag.textContent.toLowerCase() === selectedTag.toLowerCase()) hasTag = true;
-    });
-    
-    card.style.display = hasTag ? 'block' : 'none';
-  });
-});
