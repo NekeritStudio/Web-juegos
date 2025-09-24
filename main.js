@@ -7,6 +7,16 @@ const rutas = [
   "Juegos/ahorcado/metadata.json"
 ];
 
+// 🚨 Validación de protocolo
+function verificarProtocolo() {
+  if (location.protocol === 'file:') {
+    alert("⚠️ Este proyecto debe ejecutarse desde un servidor local.\n\nUsá Live Server, Python o Node para que los juegos se carguen correctamente.");
+  }
+}
+
+verificarProtocolo();
+
+
 const contenedor = document.getElementById("juegos-container");
 const inputBusqueda = document.getElementById("busqueda");
 const selectTags = document.getElementById("filtro-tags");
