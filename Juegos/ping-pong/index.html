@@ -1,15 +1,43 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <title>Pelotita</title>
-     <link rel="stylesheet" href="styles.css">
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ping Pong</title>
+    <link href="styles.css" rel="stylesheet">
+      <link rel="icon" type="image/png" href="logo.png">
 
+</head>
 <body>
+    <div class="start-screen" id="startScreen">
+        <h1 style="margin-top: 0; font-size: 36px; text-shadow: 0 0 15px #00ff88;">🏓 PING PONG</h1>
+        <p style="margin: 20px 0; font-size: 16px; color: #ffffff;">
+            ¡Bienvenido al clásico juego de Ping Pong!<br>
+            Primer jugador en llegar a 5 puntos gana.
+        </p>
+        <div style="margin: 20px 0; font-size: 14px; color: #cccccc;">
+            <p><strong>Controles:</strong></p>
+            <p>Jugador 1: W/S &nbsp;•&nbsp; Jugador 2: ↑/↓</p>
+            <p>Espacio: Pausar &nbsp;•&nbsp; R: Reiniciar</p>
+        </div>
+        <button class="start-button" onclick="startGame()">COMENZAR JUEGO</button>
+    </div>
+    
     <canvas id="c"></canvas>
+    
+    <div class="ui">
+        <span id="scoreLeft">0</span> - <span id="scoreRight">0</span>
+    </div>
+    
+    <div class="controls">
+        Jugador 1: W/S &nbsp;&nbsp;&nbsp; Jugador 2: ↑/↓ &nbsp;&nbsp;&nbsp; Espacio: Pausar &nbsp;&nbsp;&nbsp; R: Reiniciar
+    </div>
+    
+    <div class="game-over" id="gameOver">
+        <h2 id="winnerText">¡Jugador 1 Gana!</h2>
+        <p>Presiona R para jugar de nuevo</p>
+    </div>
+
     <script src="script.js"></script>
 </body>
-
 </html>
