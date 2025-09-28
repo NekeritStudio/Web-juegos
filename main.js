@@ -5,7 +5,8 @@ const rutas = [
   "Juegos/Tetris/metadata.json",
   "Juegos/ping-pong/metadata.json",
   //"Juegos/ahorcado/metadata.json",
-  "Juegos/Memory/metadata.json"
+  "Juegos/Memory/metadata.json",
+  "Juegos/pokemon-puzzle/metadata.json"
 ];
 
 // 🚨 Validación de protocolo

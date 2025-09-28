@@ -1,10 +1,9 @@
 {
-  "id": "8",
   "nombre": "Pokemon Puzzle",
   "descripcion": "Un juego de puzzle donde debes ordenar las piezas para formar una imagen completa de un Pokémon.",
-  "url": "./juegos/pokemon-puzzle/index.html",
+  "url": "./Juegos/pokemon-puzzle/index.html",
   "categoria": "Puzzle",
   "tags": ["Oneplayer","En desarrollo", "Old"],
-  "miniatura": "./juegos/pokemon-puzzle/logo.png",
+  "miniatura": "./Juegos/pokemon-puzzle/logo.png",
   "autor": "Jairo Delgado"
 }
