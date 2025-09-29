@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Space - Invaders</title>
+</head>
+<body>
+    <div class="juego">
+        <div class="puntuacion">
+            <div>VIDAS: <span id="vidas">3</span></div>
+            <div>NIVEL: <span id="nivel">1</span></div>
+            <div>PUNTOS: <span id="puntos">0</span></div>
+        </div>
+        <canvas id="juegoCanvas" width="800" height="600"></canvas>
+        <div class="controles">
+            CONTROLES: <- MOVERSE ->  | ESPACIO: DISPARAR | P: PAUSA
+        </div>
+        <div class="final" id="final">
+            <h2>FIN DEL JUEGO</h2>
+            <p>PUNTOS CONSEGUIDOS: <span id="puntosFinal">0</span></p>
+            <button onclick="reiniciarJuego()">REINICIAR JUEGO</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

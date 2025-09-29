@@ -1,0 +1,9 @@
+{
+  "nombre": "Space Invaders",
+  "descripcion": "juego de space invaders",
+  "categoria": "Accion",
+  "autor": "Dorado Rodriguez",
+  "miniatura": "./juegos/space-invaders/logo.png",
+  "url": "./juegos/space-invaders/index.html",
+  "tags": ["Oneplayer", "Retro"]
+}
