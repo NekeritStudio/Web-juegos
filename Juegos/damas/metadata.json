@@ -1,0 +1,10 @@
+{
+  "id": "9",
+  "nombre": "Damas",
+  "descripcion": "juego de las damas",
+  "url": "./juegos/damas/index.html",
+  "categoria": "Lógica",
+  "tags": ["Oneplayer", "Old", "En desarrollo"],
+  "miniatura": "./juegos/damas/logo.png",
+  "autor": ""
+}
