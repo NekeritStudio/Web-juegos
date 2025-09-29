@@ -1,0 +1,75 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #000428, #004e92);
+  font-family: "Courier New", monospace;
+  color: white;
+}
+
+.juego {
+  text-align: center;
+}
+
+.puntuacion {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-size: 20px;
+  padding: 0 20px;
+}
+
+canvas {
+  border: 3px solid #00ff00;
+  background: #000;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+  display: block;
+}
+
+.controles {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #00ff00;
+}
+
+.final {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  padding: 40px;
+  border: 3px solid #ff0000;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.final h2 {
+  color: #ff0000;
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.final button {
+  background: #00ff00;
+  color: #000;
+  border: none;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-family: "Courier New", monospace;
+  cursor: pointer;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+
+.final button:hover {
+  background: #00cc00;
+}
