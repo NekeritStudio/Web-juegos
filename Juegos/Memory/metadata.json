@@ -1,7 +1,7 @@
 {
   "id": "7",
   "nombre": "Memory",
-  "descripcion": "juego de memoria",
+  "descripcion": "Juego de memoria",
   "url": "./juegos/Memory/index.html",
   "categoria": "Lógica",
   "tags": ["Oneplayer", "Old"],

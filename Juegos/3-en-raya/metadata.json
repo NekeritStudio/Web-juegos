@@ -1,7 +1,7 @@
 {
   "id": "2",
   "nombre": "3 en raya",
-  "descripcion": "juego del 3 en raya",
+  "descripcion": "Juego del 3 en raya",
   "url": "./juegos/3-en-raya/index.html",
   "categoria": "Lógica",
   "tags": ["Two players", "Old", "One players", "Contra IA"],

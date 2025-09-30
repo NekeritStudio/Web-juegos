@@ -1,6 +1,6 @@
 {
   "nombre": "Space Invaders",
-  "descripcion": "juego de space invaders",
+  "descripcion": "Juego de space invaders",
   "categoria": "Accion",
   "autor": "Dorado Rodriguez",
   "miniatura": "./juegos/space-invaders/logo.png",

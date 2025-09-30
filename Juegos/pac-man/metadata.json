@@ -1,7 +1,7 @@
 {
   "id": "3",
   "nombre": "Pac man",
-  "descripcion": "juego del Pac man",
+  "descripcion": "Juego del Pac man",
   "url": "./juegos/pac-man/index.html",
   "categoria": "Arcade",
   "tags": ["Oneplayer", "Old"],
