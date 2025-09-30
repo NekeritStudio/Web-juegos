@@ -10,6 +10,7 @@ const rutas = [
   "Juegos/Memory/metadata.json",
   "Juegos/pokemon-puzzle/metadata.json",
   "Juegos/space-invaders/metadata.json",
+  "Juegos/snake/metadata.json",
 ];
 
 // 🚨 Validación de protocolo

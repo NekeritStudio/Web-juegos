@@ -34,7 +34,6 @@ window.onload = function() {
     // contador de tiempo
     timer = setInterval(function() {
         time++;
-        document.getElementById("time").innerText = time;
     }, 1000);
 }
 
@@ -106,8 +105,27 @@ function dragEnd() {
 
         if(correct == 9) {
             clearInterval(timer);
-            alert("GANASTE! \nTiempo: " + time + " segundos \nTurnos: " + turns);
-            location.reload();
+            modal.style.display = 'flex';
+            document.getElementById("final-time").innerText = time + " segundos";
+            document.getElementById("final-turns").innerText = turns + " turnos";
         }
     }
 }
+
+const reiniciarBtn = document.getElementById('reiniciar-btn');
+const closeBtn = document.getElementById('close-modal');
+const modal = document.getElementById('modal');
+
+reiniciarBtn.addEventListener('click', () => {
+  location.reload(); 
+});
+
+closeBtn.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+  if (e.target === modal) {
+    modal.style.display = 'none';
+  }
+});

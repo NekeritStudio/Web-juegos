@@ -12,7 +12,37 @@
     <img id="title" src="./images/logo/pokemon_logo.png" alt="Pokemon Puzzle Logo">
     <div id="board">
     </div>
+
     <h1>Turnos: <span id="turnos">0</span></h1>
+    <a href="../../index.html" title="Regresar a la pagina principal"><img class="back-btn" src="./images/back-button/back.png" alt="back button"></a>
+
+    <ul class="background">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+
+    <div class="container">
+
+        <div class="modal-overlay" id="modal">
+            <div class="modal-box">
+            <span class="close-btn" id="close-modal">&times;</span>
+            <h2>GANASTE!</h2>
+            <img src="./images/pikachu/10.jpg " style="width: 400px;height: 400px;" alt="pikachu">
+            <span style="color: #485fa7;">Tu tiempo: <span id="final-time"></span></span><br>
+            <span style="color: #485fa7;">Turnos: <span id="final-turns"></span></span><br>
+            <button id="reiniciar-btn">Reiniciar</button>
+            <span style="display: block; color: rgb(129, 206, 231);">mas niveles, proximamente!</span>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
