@@ -52,6 +52,7 @@ Cada juego debe tener un archivo `metadata.json` con la siguiente estructura:
 - `descripcion`: Descripción corta.
 - `categoria`: Ejemplo: "Estrategia", "Arcade", "Puzzle", etc.
 - `autor`: Autor del juego (opcional).
+- `github`: Enlace al repositorio de GitHub del autor (opcional).
 - `miniatura`: Imagen representativa del juego.
 - `url`: Enlace al juego para poder jugarlo.
 - `tags`: Palabras clave que describen el juego.
