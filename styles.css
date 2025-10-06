@@ -271,6 +271,11 @@ main {
   flex: 1; /* ✅ Empuja el footer hacia abajo */
 }
 
+a {
+  color: var(--footer-text);
+  text-decoration: none;
+}
+
 .footer {
   background: var(--footer-bg);
   color: var(--footer-text);
