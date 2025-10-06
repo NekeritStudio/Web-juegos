@@ -6,5 +6,6 @@
   "categoria": "Lógica",
   "tags": ["Oneplayer", "Old", "Two players", "Contra IA"],
   "miniatura": "./juegos/Ajedrez/logo.png",
-  "autor": "Alberto Ortiz"
+  "autor": "Alberto Ortiz",
+  "github": "https://github.com/alberto2005-coder"
 }

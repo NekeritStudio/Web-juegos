@@ -6,5 +6,6 @@
   "categoria": "Lógica",
   "tags": ["Two players", "Old", "One players", "Contra IA"],
   "miniatura": "./juegos/3-en-raya/tres-en-raya.png",
-  "autor": "Alberto Ortiz"
+  "autor": "Alberto Ortiz",
+  "github": "https://github.com/alberto2005-coder"
 }
