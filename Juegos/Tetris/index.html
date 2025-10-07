@@ -9,14 +9,14 @@
 </head>
 <body>
     <div class="fondo">
-        <div class="areaJuego">
+        <div class="areaJuego" id="areaJuego">
             <div class="pantallaInicioDerrota" id="pantallaInicio">
                 <h1>Tetris</h1>
                 <button id="botonIniciar">Empezar</button>
             </div>
         </div>
     </div>
-    <template id="juego">
+    <template id="plantillaJuego">
         
         <div class="juego" id="juego">
             <canvas id="tablero"></canvas>
@@ -26,7 +26,7 @@
                     <h2>Siguiente pieza:</h2>
                     <canvas></canvas>
                 </div>                    
-                <div id="puntuacion">
+                <div>
                     <h2>Puntuación: <span id="puntuacion">0</span></h2>
                 </div>
             
@@ -34,9 +34,9 @@
         </div>
 
     </template>
-    <template id="pantallaDerrota">
+    <template id="plantillaDerrota">
         
-        <div class="pantallaInicioDerrota" id="pantallaDerrota">
+        <div class="pantallaInicioDerrota" id="derrota">
             <h1>Has perdido</h1>
             <button id="botonReiniciar">Reiniciar</button>
         </div>
