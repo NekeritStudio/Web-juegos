@@ -13,6 +13,8 @@
   --shadow: rgba(0, 0, 0, 0.6);
   --header-shadow: rgba(0, 0, 0, 0.4);
   --theme-icon: "🌞";
+  --footer-bg: #111;
+  --footer-text: #fff;
 }
 
 [data-theme="light"] {
@@ -29,6 +31,8 @@
   --shadow: rgba(0, 0, 0, 0.2);
   --header-shadow: rgba(0, 0, 0, 0.2);
   --theme-icon: "🌙";
+  --footer-bg: #e0e0e0;   /* gris claro */
+  --footer-text: #333; 
 }
 
 /* ====== ESTILO GENERAL ====== */
@@ -138,7 +142,7 @@ header h1 {
 #juegos-container {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-template-columns: repeat(4, 1fr); /* ✅ siempre 4 columnas */
   max-width: calc(400px * 4 + 1.5rem * 3);
   margin: 0 auto;
   gap: 1.5rem;
@@ -164,7 +168,7 @@ header h1 {
 }
 
 .juego-card img {
-  width: 100%;
+  width: 80%;
   height: 150px;
   object-fit: cover;
   border-radius: 10px;
@@ -261,4 +265,42 @@ header h1 {
 
 .theme-indicator.show {
   opacity: 1;
+}
+
+main {
+  flex: 1; /* ✅ Empuja el footer hacia abajo */
+}
+
+a {
+  color: var(--footer-text);
+  text-decoration: none;
+}
+
+.footer {
+  background: var(--footer-bg);
+  color: var(--footer-text);
+  text-align: center;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  font-size: 14px;
+  transition: background 0.3s ease, color 0.3s ease;
+  margin-top: 2rem; /* ✅ Separación de las últimas cartas */
+}
+
+.footer .social-links a {
+  color: var(--footer-text);
+  font-size: 18px;
+  margin: 0 8px;
+  transition: color 0.3s;
+}
+
+.footer .social-links a:hover {
+  color: #7289da; /* Discord */
+}
+
+.footer .social-links a:first-child:hover {
+  color: #333; /* GitHub en hover */
 }

@@ -1,0 +1,10 @@
+{
+  "nombre": "Snake",
+  "descripcion": "Juego de Snake",
+  "categoria": "Arcade",
+  "autor": "Dorado Rodriguez",
+  "github": "https://github.com/doradorodriguez",
+  "miniatura": "./juegos/snake/logo.png",
+  "url": "./juegos/snake/index.html",
+  "tags": ["Oneplayer", "Neon"]
+}

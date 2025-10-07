@@ -1,3 +1,10 @@
+ @font-face {
+        font-family: "PokeFont"; /* Choose a descriptive name for your font */
+        src: url("./images/fonts/Pokemon\ Solid.ttf") format("truetype"); /* Adjust the path to your .ttf file */
+        font-weight: normal; /* Optional: Define font weight if applicable */
+        font-style: normal; /* Optional: Define font style if applicable */
+    }
+
 body {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
@@ -27,3 +34,198 @@ body {
     border: 1px solid #485fa7;
 }
 
+@keyframes zoomInOut {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+button {
+    font-family: PokeFont, Arial, Helvetica, sans-serif;
+    letter-spacing: 1.5px;
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    background: #ffc839;
+    color: #485fa7;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    animation: zoomInOut 2s infinite alternate ease-in-out;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+h1{
+    font-family: PokeFont, Arial, Helvetica, sans-serif;
+    letter-spacing: 1px;
+}
+
+h2 {
+    font-family: PokeFont, Arial, Helvetica, sans-serif;
+    letter-spacing: 8px;
+    -webkit-text-stroke: 2px #ffc839;
+    font-size: 50px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    user-select: none;
+}
+
+.back-btn {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.back-btn:hover {
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.7); /* Cyan glow */
+    }
+
+.close-btn {
+    color: #fb3b2f;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+@keyframes animate {
+    0%{
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100%{
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.background {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    background: white;
+    overflow: hidden;
+    z-index: -1;
+}
+.background li {
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 20px;
+    height: 20px;
+    background: url(./images/background/image.png) no-repeat;
+    background-size: cover;
+    animation: animate 19s linear infinite;
+}
+
+
+
+
+.background li:nth-child(0) {
+    left: 82%;
+    width: 198px;
+    height: 198px;
+    bottom: -198px;
+    animation-delay: 1s;
+}
+.background li:nth-child(1) {
+    left: 62%;
+    width: 143px;
+    height: 143px;
+    bottom: -143px;
+    animation-delay: 6s;
+}
+.background li:nth-child(2) {
+    left: 35%;
+    width: 190px;
+    height: 190px;
+    bottom: -190px;
+    animation-delay: 23s;
+}
+.background li:nth-child(3) {
+    left: 77%;
+    width: 166px;
+    height: 166px;
+    bottom: -166px;
+    animation-delay: 13s;
+}
+.background li:nth-child(4) {
+    left: 52%;
+    width: 166px;
+    height: 166px;
+    bottom: -166px;
+    animation-delay: 33s;
+}
+.background li:nth-child(5) {
+    left: 90%;
+    width: 192px;
+    height: 192px;
+    bottom: -192px;
+    animation-delay: 3s;
+}
+.background li:nth-child(6) {
+    left: 20%;
+    width: 176px;
+    height: 176px;
+    bottom: -176px;
+    animation-delay: 12s;
+}
+.background li:nth-child(7) {
+    left: 85%;
+    width: 118px;
+    height: 118px;
+    bottom: -118px;
+    animation-delay: 35s;
+}
+.background li:nth-child(8) {
+    left: 12%;
+    width: 189px;
+    height: 189px;
+    bottom: -189px;
+    animation-delay: 25s;
+}
+.background li:nth-child(9) {
+    left: 0%;
+    width: 132px;
+    height: 132px;
+    bottom: -132px;
+    animation-delay: 0s;
+}

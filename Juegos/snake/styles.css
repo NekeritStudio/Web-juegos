@@ -1,0 +1,65 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.juego {
+  text-align: center;
+}
+
+.puntuacion {
+  text-align: center;
+  font-size: 40px;
+  padding-bottom: 1vh;
+}
+
+.instrucciones {
+  font-size: 20px;
+  padding-top: 1vh;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: 'Arial', sans-serif;
+  color: white;
+}
+
+.fin {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  padding: 40px;
+  border: 3px solid #ff0000;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.fin h2 {
+  color: #4ade80;
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.fin button {
+  background: #4ade80;
+  color: #000;
+  border: none;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-family: 'Arial', sans-serif;
+  cursor: pointer;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+
+.fin button:hover {
+  background: #4ade80;
+}

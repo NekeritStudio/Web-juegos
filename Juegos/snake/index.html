@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="logo.png">
+  <title>Snake</title>
+</head>
+<body>
+    <div class="juego">
+        <div class="puntuacion">
+            <span>PUNTUACION: 
+                <span id="puntos">0</span></span>
+        </div>
+        <canvas id="juegoCanvas" width="800" height="600"></canvas>
+        <div class="instrucciones">
+            <div>INSTRUCCIONES:</div>
+            <div>Utiliza las flechas del teclado para mover la serpiente.</div>
+        </div>
+        <div class="fin" id="finJuego">
+            <h2>FIN DEL JUEGO</h2>
+            <p>PUNTOS CONSEGUIDOS: <span id="puntosFinal">0</span></p>
+            <button onclick="reiniciarJuego()">REINICIAR JUEGO</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

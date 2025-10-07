@@ -1,0 +1,10 @@
+{
+  "nombre": "Space Invaders",
+  "descripcion": "Juego de space invaders",
+  "categoria": "Accion",
+  "autor": "Dorado Rodriguez",
+  "github": "https://github.com/doradorodriguez",
+  "miniatura": "./juegos/space-invaders/logo.png",
+  "url": "./juegos/space-invaders/index.html",
+  "tags": ["Oneplayer", "Retro"]
+}

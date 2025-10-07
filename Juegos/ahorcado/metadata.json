@@ -1,7 +1,7 @@
 {
   "id": "6",
   "nombre": "Ahorcado",
-  "descripcion": "juego de Ajedrez",
+  "descripcion": "Juego del ahorcado",
   "url": "./juegos/ahorcado/index.html",
   "categoria": "Lógica",
   "tags": ["Oneplayer", "Old", "En desarrollo"],

@@ -8,7 +8,9 @@ const rutas = [
   //"Juegos/damas/metadata.json",
   //"Juegos/conecta4/metadata.json",
   "Juegos/Memory/metadata.json",
-  "Juegos/pokemon-puzzle/metadata.json"
+  "Juegos/pokemon-puzzle/metadata.json",
+  "Juegos/space-invaders/metadata.json",
+  "Juegos/snake/metadata.json",
 ];
 
 // 🚨 Validación de protocolo
@@ -92,7 +94,9 @@ function mostrarJuego(juego) {
         <h2>${juego.nombre}</h2>
         <p class="descripcion">${juego.descripcion}</p>
         <p class="categoria"><strong>Categoría:</strong> ${juego.categoria}</p>
-        ${juego.autor ? `<p class="autor"><strong>Autor:</strong> ${juego.autor}</p>` : ''}
+        ${juego.autor ? `<p class="autor"><strong>Autor:</strong> ${
+          juego.github ? `<a href="${juego.github}" target="_blank"> ${juego.autor}</a>`: juego.autor
+        }</p>` : ''}
         ${tagsHTML ? `<div class="tags-container">${tagsHTML}</div>` : ''}
         <button onclick="location.href='${juego.url}'">Jugar</button>
       `;

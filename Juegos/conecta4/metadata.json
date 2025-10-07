@@ -1,7 +1,7 @@
 {
   "id": "10",
   "nombre": "Conecta 4",
-  "descripcion": "juego del Conecta 4",
+  "descripcion": "Juego del Conecta 4",
   "url": "./juegos/conecta4/index.html",
   "categoria": "Lógica",
   "tags": ["Oneplayer", "Old", "En desarrollo"],
