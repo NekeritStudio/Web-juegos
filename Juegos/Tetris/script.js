@@ -97,23 +97,21 @@ document.addEventListener('keydown', (event) => {
         if(!tetromino){
             return;
         }
+
+        let noEstaAlFinal = tetromino.posicion[1] !== posicionMaximaActual;
         let movimiento = false;
-        if(event.key === 'ArrowLeft' && tetromino.posicion[0] > 0 && tetromino.posicion[1] !== posicionMaximaActual ){
-            tetromino.moverIzquierda();
-            dibujarTablero(tetromino);
-            movimiento = true;
+
+        if(event.key === 'ArrowLeft' && noEstaAlFinal ){
+            movimiento = tetromino.moverIzquierda();
         }
-        else if(event.key === 'ArrowRight' && tetromino.posicion[0] + tetromino.matriz[0].length < columnas && tetromino.posicion[1] !== posicionMaximaActual){
-            tetromino.moverDerecha();
-            dibujarTablero(tetromino);
-            movimiento = true;
+        else if(event.key === 'ArrowRight' && noEstaAlFinal){
+            movimiento = tetromino.moverDerecha();
         }
-        else if(event.key === 'ArrowDown' && tetromino.posicion[1] !== posicionMaximaActual){
+        else if(event.key === 'ArrowDown' && noEstaAlFinal){
             tetromino.moverAbajo();
             dibujarTablero(tetromino);
-            
         }
-        else if(event.key === 'ArrowUp' && tetromino.posicion[1] !== posicionMaximaActual){
+        else if(event.key === 'ArrowUp' && noEstaAlFinal){
             tetromino.girar();
             dibujarTablero(tetromino);
             movimiento = true;
@@ -162,9 +160,9 @@ function crearCeldas() {
     }
 
 }
+
 let ultimaActualizacion = 0;
 const intervaloCaida = 1000;
-
 
 function actualizarJuego(tetrominoActual, tiempoActual = 0) {
 
@@ -211,60 +209,51 @@ function dibujarTablero(tetrominoActual) {
     tetrominoActual.dibujar(contexto);
 }
 
-//funcion que por el momento solo sirve para detectar el final (y esta mal hecha)
-/*function revisarColision(tetromino) {
-    if(tetromino.matriz.forEach((fila, indiceFila) => {
-        fila.forEach((valor, indiceColumna) => {
-            if(valor !== 0){
-                if(tablero["matriz"][tetromino.posicion[1] + indiceFila] === undefined ||
-                   tablero["matriz"][tetromino.posicion[1] + indiceFila][tetromino.posicion[0] + indiceColumna] !== null){
-                    return true;
-                }
-            }
-        });
-    })){
-        return true;
-    }
-    return false;
-}*/
-//calcula la posicion para que caiga el tetromino terminarlo?
 function calcularColision(tetrominoActual) {
+    const matriz = tetrominoActual.matriz;
+    
+    const posX = tetrominoActual.posicion[0];
+    const posY = tetrominoActual.posicion[1];
+    
+    const anchoTetromino = matriz[0].length;
+    const altoTetromino = matriz.length;
 
-    let filaTableroColision = 20;
-    let filaColisionableTetromino = -1;
+    let posicionesMaximas = [];
 
-    for(let fila = tetrominoActual.matriz.length-1; fila > 0; fila--){
-        tetrominoActual.matriz[fila].forEach((valor, indiceColumna) => {
-            if(valor === 1){
-                filaColisionableTetromino = fila+1;
-                return;
-            }
-        });
-        if(filaColisionableTetromino !== -1){
-            break;
-        }
-    }
-
-    console.log("Fila colisionable del tetromino: "+filaColisionableTetromino);
-
-    for(let fila = tetrominoActual.posicion[1] + tetrominoActual.matriz.length; fila < filas; fila++){
-        for(let columna = tetrominoActual.posicion[0]; columna < tetrominoActual.posicion[0] + tetrominoActual.matriz[0].length; columna++){
-            if(tablero["matriz"][fila] !== undefined && tablero["matriz"][fila][columna] !== null){
-                filaTableroColision = fila;
+    for (let col = 0; col < anchoTetromino; col++) {
+        //Encuentra el bloque más bajo en esta columna del tetromino
+        let filaBloqueTetromino = -1;
+        for (let fila = altoTetromino - 1; fila >= 0; fila--) {
+            if (matriz[fila][col] === 1) {
+                filaBloqueTetromino = fila;
                 break;
             }
         }
-        if(filaTableroColision !== 20){
-            break;
+        
+        if (filaBloqueTetromino === -1) {
+            continue; // No hay bloque en esta columna
         }
+
+        //Busca la primera celda ocupada en el tablero debajo del bloque más bajo
+        let filaColisionTablero = filas; //Por defecto, sera el fondo del tablero
+        for (let y = posY + filaBloqueTetromino + 1; y < filas; y++) {
+            if (tablero["matriz"][y][posX + col] !== null) {
+                filaColisionTablero = y;
+                break;
+            }
+        }
+
+        // La posición máxima para este bloque es:
+        let maxPos = filaColisionTablero - filaBloqueTetromino - 1;
+        posicionesMaximas.push(maxPos);
     }
-    console.log("Fila colisionable del tablero: "+filaTableroColision)
-    const posicionMaxima = filaTableroColision - filaColisionableTetromino;
-    console.log("Posicion que deberia terminar: "+posicionMaxima)
+
+    const posicionMaxima = Math.min(...posicionesMaximas);
+    console.log("Posición máxima calculada: " + posicionMaxima);
     return posicionMaxima;
 }
 
-
+//Insertar la matriz del tetromino dentro de la matriz del tablero
 function insertarMatrizEnTablero(tetrominoActual) {
     tetrominoActual.matriz.forEach((fila, indiceFila) => {
         fila.forEach((valor, indiceColumna) => {
@@ -308,11 +297,104 @@ class Tetromino{
     moverAbajo(){
         this.posicion[1]++;
     }
+    //terminar esto
     moverIzquierda(){
-        this.posicion[0]--;
+        const posicionX = this.posicion[0];
+        const posicionY = this.posicion[1];
+
+        const matriz = this.matriz;
+
+        let numFilas = matriz.length;
+        let numColumnas = matriz[0].length;
+        
+        let puedeMover = true;
+
+        //Recorre todas las filas del tetromino
+        for(let fila = 0; fila < numFilas ;fila++){
+            let columnaBloque = -1;
+            for(let columna = 0; columna < numColumnas; columna++){// Recorre las columnas de una fila del tetromino
+                if(matriz[fila][columna] === 1){ //Encuentra el primer bloque en la fila
+                    columnaBloque = columna; 
+                    break;
+                }
+            }
+            console.log("Fila: "+fila+"\n");
+            if(columnaBloque === -1){
+                console.log("No habia bloques en la fila: "+fila);
+                continue; //No hay bloques en esta fila
+            }
+            console.log("Columna donde hay bloque: "+columnaBloque);
+
+            // Comprobar si la posicion donde estara no esta disponible o fuera del mapa
+            let posicionXBloque = posicionX + columnaBloque -1 ;
+            console.log("Posicion izquierda del bloque en el tablero: "+posicionXBloque);
+            let posicionYBloque = posicionY + fila;
+            console.log("Posicion Y del bloque en el tablero: "+posicionYBloque);
+
+            let posicionFutura = tablero["matriz"][posicionYBloque][posicionXBloque];
+            console.log("La posicion futura a estar es: "+posicionFutura);
+            if(posicionFutura !== null || posicionXBloque < 0 || posicionFutura === undefined){
+                puedeMover = false;
+                break;
+            }
+            console.log("No hay colision, continuando con siguiente fila...");
+        }
+        if(puedeMover){
+            this.posicion[0]--;
+            dibujarTablero(tetromino);
+            return true
+        }
+        console.log("Se ha detectado colision")
+        return false;
     }
     moverDerecha(){
-        this.posicion[0]++;
+        const posicionX = this.posicion[0];
+        const posicionY = this.posicion[1];
+
+        const matriz = this.matriz;
+
+        let numFilas = matriz.length;
+        let numColumnas = matriz[0].length;
+        
+        let puedeMover = true;
+
+        //Recorre todas las filas del tetromino
+        for(let fila = 0; fila < numFilas ;fila++){
+            let columnaBloque = -1;
+            for(let columna = numColumnas-1; columna >= 0; columna--){// Recorre las columnas de una fila del tetromino
+                if(matriz[fila][columna] === 1){ //Encuentra el primer bloque en la fila
+                    columnaBloque = columna; 
+                    break;
+                }
+            }
+            console.log("Fila: "+fila+"\n");
+            if(columnaBloque === -1){
+                console.log("No habia bloques en la fila: "+fila);
+                continue; //No hay bloques en esta fila
+            }
+            console.log("Columna donde hay bloque: "+columnaBloque);
+
+            // Comprobar si la posicion donde estara no esta disponible o fuera del mapa
+            let posicionXBloque = posicionX + columnaBloque +1 ;
+            console.log("Posicion izquierda del bloque en el tablero: "+posicionXBloque);
+            let posicionYBloque = posicionY + fila;
+            console.log("Posicion Y del bloque en el tablero: "+posicionYBloque);
+
+            let posicionFutura = tablero["matriz"][posicionYBloque][posicionXBloque];
+            console.log("La posicion futura a estar es: "+posicionFutura);
+            if(posicionFutura !== null || posicionXBloque > columnas || posicionFutura === undefined){
+                puedeMover = false;
+                break;
+            }
+            console.log("No hay colision, continuando con siguiente fila...");
+        }
+        if(puedeMover){
+            this.posicion[0]++;
+            dibujarTablero(tetromino);
+            return true
+        }
+        console.log("Se ha detectado colision")
+        return false;
     }
 
     //Dibuja el tetromino en el tablero
