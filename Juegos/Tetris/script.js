@@ -5,7 +5,7 @@ const pantallaInicio = document.getElementById('pantallaInicio');
 const areaJuego = document.getElementById('areaJuego');
 
 const plantillaJuego = document.getElementById('plantillaJuego');
-const plantillaDerrota = document.getElementById('pantallaDerrota');
+const plantillaDerrota = document.getElementById('plantillaDerrota');
 
 //Indices de los tetrominos
 const indice = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
@@ -65,7 +65,7 @@ const tablero = {
 
 let posicionMaximaActual;
 
-let juegoTerminado = false;
+
 
 botonIniciar.addEventListener('click', iniciarJuego);
 //Todo lo necesario para iniciar el juego
@@ -120,6 +120,7 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
+let juegoTerminado = false;
 //Funcion para seguir creando los tetrominos indefinidamente
 function crearNuevoTetromino() {
     const indice = tetrominoAleatorio();
@@ -135,10 +136,33 @@ function crearNuevoTetromino() {
     tetromino.dibujar(tablero["contexto"]());
 
     crearCeldas();
-    posicionMaximaActual = calcularColision(tetromino);
-    requestAnimationFrame(() => actualizarJuego(tetromino, 0));
-}
+    if(esPosicionValida(tetromino.matriz, tetromino.posicion)){
+        posicionMaximaActual = calcularColision(tetromino);
+        requestAnimationFrame(() => actualizarJuego(tetromino, 0));
+    }
+    else{
+        console.log("Juego terminado");
 
+        const pantallaDerrota = plantillaDerrota.content.cloneNode(true);
+        plantillaDerrota.remove();
+
+        console.log(pantallaDerrota);
+        areaJuego.appendChild(pantallaDerrota);
+        
+        const contenedorDerrota = document.getElementById("derrota");
+
+        const botonReiniciar = document.getElementById("botonReiniciar");
+        botonReiniciar.addEventListener("click", (event)=>{
+            contenedorDerrota.remove();
+            tablero["matriz"] = Array.from({ length: filas }, () => Array(columnas).fill(null));
+            crearNuevoTetromino();
+        });
+    }
+    
+}
+function intentarDeNuevo(){
+
+}
 //Dibuja las celdas del tablero
 function crearCeldas() {
     const contexto = tablero["contexto"]();
