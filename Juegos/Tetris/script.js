@@ -215,11 +215,14 @@ function actualizarJuego(tetrominoActual, tiempoActual = 0) {
 }
 
 // Dibuja los bloques que han sido fijados al tablero
+// Tambien valida las filas que estan completas
 function dibujarTablero(tetrominoActual) {
     const contexto = tablero["contexto"]();
     contexto.clearRect(0, 0, tablero["ancho"], tablero["alto"]);
     crearCeldas();
+    let filasLimpiar = [] //Guarda las filas que estan completas
     tablero["matriz"].forEach((fila, indiceFila) => {
+        let limpiarFila = true; //Comprobara si hay un espacio en blanco en la fila
         fila.forEach((valor, indiceColumna) => {
             if (valor !== null) {
                 contexto.fillStyle = valor;
@@ -229,11 +232,42 @@ function dibujarTablero(tetrominoActual) {
 
                 contexto.fillRect(desplazarMedioPixel(posicionX), desplazarMedioPixel(posicionY), tablero["ladoCelda"], tablero["ladoCelda"]);
             }
+            else{
+                limpiarFila = false; // Si no es null, es decir hay un espacio vacio, cambiara a false
+            }
         })
+        if(limpiarFila){// Si se mantiene true, es decir toda la fila esta llena
+            filasLimpiar.push(indiceFila); //Se guarda el indice de la fila llena
+        }// TO-DO comprobar si funciona como deberia hasta ahora
     })
+    console.log("Filas que estan completas: "+filasLimpiar);
+    limpiarFilas(filasLimpiar);
     tetrominoActual.dibujar(contexto);
 }
+function limpiarFilas(filasLimpiar){
+    console.log("Entrando en funcion limpiarFilas, las filas a limpiar son: "+filasLimpiar);
+    for(let filasEliminadas = 0; filasEliminadas < filasLimpiar.length ;filasEliminadas++ ){
+        let filaEliminar = filasLimpiar.pop() + filasEliminadas;
+        console.log("Fila a remover: "+ filaEliminar);
 
+        for(let filaTablero = filaEliminar; filaTablero >= 0; filaTablero--){
+            console.log("Fila del tablero: "+filaTablero);
+            let filaNuevaTablero = Array.from(tablero["matriz"][filaTablero-1]);
+            console.log("Fila nueva: "+filaNuevaTablero);
+            let filaVacia = filaNuevaTablero.some(valor => valor !== null)
+            tablero["matriz"][filaTablero] = filaNuevaTablero
+            
+            if(!filaVacia){
+                break;
+            }
+            
+        }
+    }
+}
+
+function calcularPuntuacion(filas){
+    return ;
+}
 //Funcion para calcular la posicion maxima que puede estar el tetromino
 function calcularColision(tetrominoActual) {
     const matriz = tetrominoActual.matriz;
