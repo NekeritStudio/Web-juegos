@@ -33,9 +33,11 @@ button:hover{
     align-items: center;
 }
 .pantallaInicioDerrota{
+    position:fixed;
+    z-index: 1;
     background-color: #EBDA3F;
     height: 50%;
-    width: 100%;
+    width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
