@@ -7,6 +7,7 @@ const areaJuego = document.getElementById('areaJuego');
 const plantillaJuego = document.getElementById('plantillaJuego');
 const plantillaDerrota = document.getElementById('plantillaDerrota');
 
+
 //Indices de los tetrominos
 const indice = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
 
@@ -18,10 +19,10 @@ const tetrominos = {
     [0, 0, 0, 0]],
     'J': [[0, 0, 0],
     [1, 1, 1],
-    [1, 0, 0]],
+    [0, 0, 1]],
     'L': [[0, 0, 0],
     [1, 1, 1],
-    [0, 0, 1]],
+    [1, 0, 0]],
     'O': [[0, 0, 0, 0],
     [0, 1, 1, 0],
     [0, 1, 1, 0],
@@ -63,9 +64,21 @@ const tablero = {
     }
 };
 
+const siguientePieza = {
+    "elemento": null,
+    "matriz":Array.from({length: 4}, () => Array(8).fill(null)),
+    "ancho":0,
+    "alto":0,
+    "ladoCelda":0,
+    "contexto": function() {
+        return this.elemento.getContext('2d');
+    }
+}
+
 let posicionMaximaActual;
 
-
+//Referencia al siguiente tetromino que aparecera
+let siguienteTetromino = null;
 
 botonIniciar.addEventListener('click', iniciarJuego);
 //Todo lo necesario para iniciar el juego
@@ -87,6 +100,14 @@ function iniciarJuego() {
     tablero["ladoCelda"] = tablero["ancho"] / columnas;
     tablero["elemento"].width = tablero["ancho"];
     tablero["elemento"].height = tablero["alto"];
+
+    //Configurar sitio para la siguiente pieza
+    siguientePieza["elemento"] = document.getElementById('siguientePieza');
+    siguientePieza["ancho"] = siguientePieza["elemento"].offsetWidth;
+    siguientePieza["alto"] = siguientePieza["elemento"].offsetHeight;
+    siguientePieza["ladoCelda"] = siguientePieza["ancho"]/8;
+    siguientePieza["elemento"].width = siguientePieza["ancho"];
+    siguientePieza["elemento"].height = siguientePieza["alto"];
 
     crearNuevoTetromino();
 }
@@ -123,19 +144,26 @@ document.addEventListener('keydown', (event) => {
 let juegoTerminado = false;
 //Funcion para seguir creando los tetrominos indefinidamente
 function crearNuevoTetromino() {
-    const indice = tetrominoAleatorio();
+    if(siguienteTetromino !== null){
+        tetromino = siguienteTetromino;
+    }
+    else{
+        tetromino = tetrominoAleatorio();
+    }
+    
+    siguienteTetromino = tetrominoAleatorio();
+    
+    siguienteTetromino.posicion = [1, 0]
+    tetromino.posicion = [3, -1];
 
-    tetromino = new Tetromino(indice,
-        tetrominos[indice],
-        colores[indice],
-        [3, -1]
-    );
-
-    tetromino.informacion();
+    console.log("El siguiente tetromino sera: "+siguienteTetromino.indice);
 
     tetromino.dibujar(tablero["contexto"]());
-
+    siguientePieza["contexto"]().clearRect(0, 0, siguientePieza["ancho"], siguientePieza["alto"])
+    siguienteTetromino.dibujar(siguientePieza["contexto"]());
     crearCeldas();
+    
+
     if(esPosicionValida(tetromino.matriz, tetromino.posicion)){
         posicionMaximaActual = calcularColision(tetromino);
         requestAnimationFrame(() => actualizarJuego(tetromino, 0));
@@ -153,16 +181,20 @@ function crearNuevoTetromino() {
 
         const botonReiniciar = document.getElementById("botonReiniciar");
         botonReiniciar.addEventListener("click", (event)=>{
+            const puntuacion = document.getElementById("puntuacion");
+            puntuacion.innerText = "0";
+            
+            siguienteTetromino = null;
+
             contenedorDerrota.remove();
             tablero["matriz"] = Array.from({ length: filas }, () => Array(columnas).fill(null));
+            
             crearNuevoTetromino();
         });
     }
     
 }
-function intentarDeNuevo(){
 
-}
 //Dibuja las celdas del tablero
 function crearCeldas() {
     const contexto = tablero["contexto"]();
@@ -216,13 +248,12 @@ function actualizarJuego(tetrominoActual, tiempoActual = 0) {
 
 // Dibuja los bloques que han sido fijados al tablero
 // Tambien valida las filas que estan completas
+const filasLimpiar = []
 function dibujarTablero(tetrominoActual) {
     const contexto = tablero["contexto"]();
     contexto.clearRect(0, 0, tablero["ancho"], tablero["alto"]);
     crearCeldas();
-    let filasLimpiar = [] //Guarda las filas que estan completas
     tablero["matriz"].forEach((fila, indiceFila) => {
-        let limpiarFila = true; //Comprobara si hay un espacio en blanco en la fila
         fila.forEach((valor, indiceColumna) => {
             if (valor !== null) {
                 contexto.fillStyle = valor;
@@ -232,42 +263,33 @@ function dibujarTablero(tetrominoActual) {
 
                 contexto.fillRect(desplazarMedioPixel(posicionX), desplazarMedioPixel(posicionY), tablero["ladoCelda"], tablero["ladoCelda"]);
             }
-            else{
-                limpiarFila = false; // Si no es null, es decir hay un espacio vacio, cambiara a false
-            }
-        })
-        if(limpiarFila){// Si se mantiene true, es decir toda la fila esta llena
-            filasLimpiar.push(indiceFila); //Se guarda el indice de la fila llena
-        }// TO-DO comprobar si funciona como deberia hasta ahora
-    })
-    console.log("Filas que estan completas: "+filasLimpiar);
-    limpiarFilas(filasLimpiar);
+        });
+    });
     tetrominoActual.dibujar(contexto);
 }
-function limpiarFilas(filasLimpiar){
-    console.log("Entrando en funcion limpiarFilas, las filas a limpiar son: "+filasLimpiar);
-    for(let filasEliminadas = 0; filasEliminadas < filasLimpiar.length ;filasEliminadas++ ){
-        let filaEliminar = filasLimpiar.pop() + filasEliminadas;
-        console.log("Fila a remover: "+ filaEliminar);
+function limpiarFilas(){
+    // conjunto de índices únicos a eliminar
+    const eliminarSet = new Set(filasLimpiar);
+    // filtrar las filas que NO se van a eliminar (mantiene orden de arriba a abajo)
+    const nuevaMatriz = tablero["matriz"].filter((fila, indice) => !eliminarSet.has(indice));
 
-        for(let filaTablero = filaEliminar; filaTablero >= 0; filaTablero--){
-            console.log("Fila del tablero: "+filaTablero);
-            let filaNuevaTablero = Array.from(tablero["matriz"][filaTablero-1]);
-            console.log("Fila nueva: "+filaNuevaTablero);
-            let filaVacia = filaNuevaTablero.some(valor => valor !== null)
-            tablero["matriz"][filaTablero] = filaNuevaTablero
-            
-            if(!filaVacia){
-                break;
-            }
-            
-        }
+    // añadir filas vacías arriba hasta alcanzar la altura original
+    while (nuevaMatriz.length < filas) {
+        nuevaMatriz.unshift(Array(columnas).fill(null));
     }
+
+    tablero["matriz"] = nuevaMatriz;
+
+    // limpiar la lista de filas marcadas
+    filasLimpiar.length = 0;
 }
 
-function calcularPuntuacion(filas){
-    return ;
+function calcularPuntuacion(){
+    const puntuacion = document.getElementById("puntuacion");
+    let nuevaPuntuacion = parseInt(puntuacion.textContent) + (Math.pow(filasLimpiar.length, 2) * 50);
+    puntuacion.innerText = nuevaPuntuacion ;
 }
+
 //Funcion para calcular la posicion maxima que puede estar el tetromino
 function calcularColision(tetrominoActual) {
     const matriz = tetrominoActual.matriz;
@@ -322,6 +344,34 @@ function insertarMatrizEnTablero(tetrominoActual) {
             }
         });
     });
+    comprobarFilasCompletas();
+}
+
+function comprobarFilasCompletas(){
+    tablero["matriz"].forEach((fila, indice)=>{
+        let limpiarFila = true;//Comprobara si hay un espacio en blanco en la fila
+        fila.forEach((valor)=>{
+            if(valor === null){
+                limpiarFila = false; // Si no es null, es decir hay un espacio vacio, cambiara a false
+            }
+        });
+        if(limpiarFila){// Si se mantiene true, es decir toda la fila esta llena
+            filasLimpiar.push(indice);//Se guarda el indice de la fila llena
+        }
+    });
+    console.log("Filas que estan completas: "+filasLimpiar);
+    if(filasLimpiar.length > 0){
+        calcularPuntuacion();
+        limpiarFilas();
+    }
+}
+
+function dibujarSiguientePieza(tetromino){
+    const contexto = siguientePieza["contexto"]();
+    contexto.clearRect(0,0, siguientePieza["alto"], siguientePieza["ancho"]);
+    for(let fila = 0; fila < tetromino.length; fila++){
+        
+    }
 }
 
 //Evita que las lineas se vean borrosas
@@ -333,7 +383,11 @@ function desplazarMedioPixel(posicion) {
 function tetrominoAleatorio() {
     const indiceAleatorio = Math.floor(Math.random() * indice.length);
     const claveTetromino = indice[indiceAleatorio];
-    return claveTetromino;
+    return new Tetromino(claveTetromino,
+        tetrominos[claveTetromino],
+        colores[claveTetromino],
+        [0, 0]
+    );
 }
 
 //Clase Tetromino
